@@ -2,13 +2,16 @@
 using Application.Interfaces;
 using Domain.Models;
 using Infrastructure.Databases;
+using AutoMapper;
 namespace Application.Services
 {
     public class BookService : IBookService
     {
         private readonly FakeDatabase _database;
-        public BookService(FakeDatabase database)
+        private readonly IMapper _mapper;
+        public BookService(FakeDatabase database, IMapper mapper)
         {
+            _mapper = mapper;
             _database = database;
         }
         public List<Book> GetAllBooks()
@@ -40,7 +43,7 @@ namespace Application.Services
                     throw new Exception("Book not found");
                 }
 
-                return new BookDto(foundBook.Id, foundBook.Title);
+                return _mapper.Map<BookDto>(foundBook);
             }
             catch
             {
