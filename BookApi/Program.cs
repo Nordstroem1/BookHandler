@@ -1,5 +1,7 @@
+using AutoMapper;
 using Application.Services;
 using Infrastructure.Databases;
+using Application.MappingProfiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(typeof(BookmappingProfile));
 builder.Services.AddSingleton<FakeDatabase>();
 builder.Services.AddSingleton<BookService>();
 
@@ -22,9 +25,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
