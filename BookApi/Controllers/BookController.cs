@@ -2,7 +2,6 @@
 using NSwag.Annotations;
 using Application.Services;
 using Application.Dtos;
-using System.Text.Json;
 using Domain.Models;
 namespace BookApi.Controllers
 {
