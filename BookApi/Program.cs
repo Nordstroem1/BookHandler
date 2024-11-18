@@ -12,6 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(BookmappingProfile));
+builder.Services.AddAutoMapper(typeof(AuthormappingProfile));
 builder.Services.AddSingleton<FakeDatabase>();
 builder.Services.AddSingleton<BookService>();
 
