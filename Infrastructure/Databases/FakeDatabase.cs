@@ -48,7 +48,6 @@ namespace Infrastructure.Databases
 
             if (foundBook != null)
             {
-                foundBook.Id = updatedBook.Id;
                 foundBook.Title = updatedBook.Title;
                 foundBook.AuthorId = updatedBook.AuthorId;
                 foundBook.Pages = updatedBook.Pages;
@@ -95,7 +94,6 @@ namespace Infrastructure.Databases
 
             if (foundAuthor != null)
             {
-                foundAuthor.Id = updatedAuthor.Id;
                 foundAuthor.Name = updatedAuthor.Name;
                 foundAuthor.DateOfBirth = updatedAuthor.DateOfBirth;
                 foundAuthor.PlaceOfBirth = updatedAuthor.PlaceOfBirth;
