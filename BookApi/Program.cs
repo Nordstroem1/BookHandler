@@ -1,4 +1,3 @@
-using AutoMapper;
 using Application.Services;
 using Infrastructure.Databases;
 using Application.MappingProfiles;
@@ -15,6 +14,7 @@ builder.Services.AddAutoMapper(typeof(BookmappingProfile));
 builder.Services.AddAutoMapper(typeof(AuthormappingProfile));
 builder.Services.AddSingleton<FakeDatabase>();
 builder.Services.AddSingleton<BookService>();
+builder.Services.AddSingleton<AuthorService>();
 
 var app = builder.Build();
 

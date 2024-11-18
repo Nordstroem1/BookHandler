@@ -88,6 +88,25 @@ namespace BookApi.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
-
+        [HttpDelete("DeleteAuthor")]
+        public IActionResult DeleteAuthor([FromQuery] string id)
+        {
+            try
+            {
+                bool authorDeleted = _authorService.DeleteAuthor(Guid.Parse(id));
+                if (authorDeleted)
+                {
+                    return Ok("Author deleted");
+                }
+                else
+                {
+                    return BadRequest("Could not delete Author.");
+                }
+            }
+            catch
+            {
+                return StatusCode(500, "Internal server error");
+            }
+        }
     }
 }

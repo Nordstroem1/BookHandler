@@ -4,6 +4,7 @@
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
+        public BookDto(){}
         public BookDto(Guid id, string title)
         {
             Id = id;
