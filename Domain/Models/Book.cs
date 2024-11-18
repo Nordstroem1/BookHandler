@@ -2,7 +2,7 @@
 {
     public class Book
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
         public string Title { get; set; }
         public Guid AuthorId { get; set; }
         public int Pages { get; set; }
