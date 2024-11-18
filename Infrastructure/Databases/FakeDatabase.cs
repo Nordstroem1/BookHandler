@@ -19,14 +19,14 @@ namespace Infrastructure.Databases
 
             Books = new List<Book>
             {
-                new Book(Guid.NewGuid(), "The Great Gatsby", author1.Id, 1925),
-                new Book(Guid.NewGuid(), "To Kill a Mockingbird", author2.Id, 1960),
-                new Book(Guid.NewGuid(), "1984", author3.Id, 1949),
-                new Book(Guid.NewGuid(), "The Catcher in the Rye", author4.Id, 1951),
-                new Book(Guid.NewGuid(), "The Grapes of Wrath", author5.Id, 1939),
-                new Book(Guid.NewGuid(), "The Lord of the Rings", author6.Id, 1954),
-                new Book(Guid.NewGuid(), "The Hobbit", author6.Id, 1937),
-                new Book(Guid.NewGuid(), "Pride and Prejudice", author7.Id, 1813)
+                 new Book(Guid.NewGuid(), "The Great Gatsby", author1.Id, 1925),
+                 new Book(Guid.NewGuid(), "To Kill a Mockingbird", author2.Id, 1960),
+                 new Book(Guid.NewGuid(), "1984", author3.Id, 1949),
+                 new Book(Guid.NewGuid(), "The Catcher in the Rye", author4.Id, 1951),
+                 new Book(Guid.NewGuid(), "The Grapes of Wrath", author5.Id, 1939),
+                 new Book(Guid.NewGuid(), "The Lord of the Rings", author6.Id, 1954),
+                 new Book(Guid.NewGuid(), "The Hobbit", author6.Id, 1937),
+                 new Book(Guid.NewGuid(), "Pride and Prejudice", author7.Id, 1813)
             };
         }
         public List<Book> GetAllBooks()
@@ -42,9 +42,9 @@ namespace Infrastructure.Databases
             Books.Add(book);
             return true;
         }
-        public bool UpdateBook(Guid id, Book updatedBook)
+        public bool UpdateBook(Guid idOfBook, Book updatedBook)
         {
-            Book foundBook = Books.FirstOrDefault(book => book.Id == id);
+            Book? foundBook = Books.FirstOrDefault(book => book.Id == idOfBook);
 
             if (foundBook != null)
             {
@@ -63,10 +63,57 @@ namespace Infrastructure.Databases
         }
         public bool DeleteBook(Guid id)
         {
-            Book foundBook = Books.FirstOrDefault(book => book.Id == id);
+            Book? foundBook = Books.FirstOrDefault(book => book.Id == id);
             if (foundBook != null)
             {
                 Books.Remove(foundBook);
+            }
+            else
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public List<Author> GetAllAuthors()
+        {
+            return Authors;
+        }
+        public Author? GetAuthor(Guid id)
+        {
+            return Authors.FirstOrDefault(author => author.Id == id);
+        }
+        public bool AddAuthor(Author author)
+        {
+            Authors.Add(author);
+            return true;
+        }
+        public bool UpdateAuthor(Guid idOfAuthor, Author updatedAuthor)
+        {
+            Author? foundAuthor = Authors.FirstOrDefault(author => author.Id == idOfAuthor);
+
+            if (foundAuthor != null)
+            {
+                foundAuthor.Id = updatedAuthor.Id;
+                foundAuthor.Name = updatedAuthor.Name;
+                foundAuthor.DateOfBirth = updatedAuthor.DateOfBirth;
+                foundAuthor.PlaceOfBirth = updatedAuthor.PlaceOfBirth;
+            }
+            else
+            {
+
+                return false;
+            }
+
+            return true;
+        }
+        public bool DeleteAuthor(Guid id)
+        {
+            Author? foundAuthor = Authors.FirstOrDefault(author => author.Id == id);
+            if (foundAuthor != null)
+            {
+                Authors.Remove(foundAuthor);
             }
             else
             {
