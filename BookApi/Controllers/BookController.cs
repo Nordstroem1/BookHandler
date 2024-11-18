@@ -16,7 +16,7 @@ namespace BookApi.Controllers
         }
 
         [HttpGet("GetAllBooks")]
-        [SwaggerOperation("Retrieves all the books from the database.")]
+        [OpenApiOperation("Retrieves all the books from the database.")]
         public IActionResult GetAllBooks()
         {
             try
@@ -31,7 +31,7 @@ namespace BookApi.Controllers
         }
 
         [HttpGet("GetBook")]
-        [SwaggerOperation("Retrieves a book from the database.")]
+        [OpenApiOperation("Retrieves a book from the database.")]
         public IActionResult GetBook([FromQuery] string id)
         {
             try
@@ -49,7 +49,7 @@ namespace BookApi.Controllers
         }
 
         [HttpPost("AddBook")]
-        [SwaggerOperation("Adds a book to the database.")]
+        [OpenApiOperation("Adds a book to the database.")]
         public IActionResult AddBook([FromBody] Book book)
         {
             try
@@ -71,7 +71,7 @@ namespace BookApi.Controllers
             }
         }
         [HttpPut("UpdateBook")]
-        [SwaggerOperation("Updates a book in the database.")]
+        [OpenApiOperation("Updates a book in the database.")]
         public IActionResult UpdateBook([FromQuery] string idOfChosenBook, [FromBody] Book book)
         {
             try
@@ -93,7 +93,7 @@ namespace BookApi.Controllers
             }
         }
         [HttpDelete("DeleteBook")]
-        [SwaggerOperation("Deletes a book from the database.")]
+        [OpenApiOperation("Deletes a book from the database.")]
         public IActionResult DeleteBook([FromQuery] string id)
         {
             try

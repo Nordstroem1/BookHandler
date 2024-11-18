@@ -36,7 +36,7 @@ namespace Application.Services
         {
             try
             {
-                Book foundBook = _database.GetBook(id);
+                Book? foundBook = _database.GetBook(id);
 
                 if (foundBook == null)
                 {
