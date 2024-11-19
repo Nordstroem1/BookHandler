@@ -2,9 +2,9 @@
 using MediatR;
 namespace Application.Books.Queries.Books
 {
-    public class GetBookById : IRequest<BookDto>
+    public class GetBookByIdQuery : IRequest<BookDto>
     {
-        public GetBookById(BookDto bookDto)
+        public GetBookByIdQuery(BookDto bookDto)
         {
             BookDto = bookDto;
         }

@@ -7,6 +7,7 @@ using MediatR;
 using Application.Books.Commands.CreateBook;
 using Application.Books.Commands.UpdateBook;
 using Application.Books.Commands.DeleteBook;
+using Application.Books.Queries.Books;
 
 namespace BookApi.Controllers
 {
@@ -26,7 +27,7 @@ namespace BookApi.Controllers
         //{
         //    try
         //    {
-        //        var books = _bookService.GetAllBooks();
+        //        var books = _mediator.Send(new GetBookByIdCommand());
         //        return books.Count == 0 ? NotFound("No books in list") : Ok(books);
         //    }
         //    catch
@@ -35,23 +36,23 @@ namespace BookApi.Controllers
         //    }
         //}
 
-        //[HttpGet("GetBook")]
-        //[OpenApiOperation("Retrieves a book from the database.")]
-        //public IActionResult GetBook([FromQuery] string id)
-        //{
-        //    try
-        //    {
-        //        BookDto bookDto = _bookService.GetBook(Guid.Parse(id));
+        [HttpGet("GetBook")]
+        [OpenApiOperation("Retrieves a book from the database.")]
+        public IActionResult GetBook([FromQuery] string id)
+        {
+            try
+            {
+                BookDto bookDto = _mediator.Send(new GetBookByIdCommand(Guid.Parse(id)));
 
-        //        if (bookDto == null) { return NotFound("Book not found"); }
+                if (bookDto == null) { return NotFound("Book not found"); }
 
-        //        return Ok(bookDto);
-        //    }
-        //    catch
-        //    {
-        //        return StatusCode(500, "Internal server error");
-        //    }
-        //}
+                return Ok(bookDto);
+            }
+            catch
+            {
+                return StatusCode(500, "Internal server error");
+            }
+        }
 
         [HttpPost("AddBook")]
         [OpenApiOperation("Adds a book to the database.")]
