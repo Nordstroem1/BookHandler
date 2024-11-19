@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using System.Diagnostics.Metrics;
 namespace Infrastructure.Databases
 {
     public class FakeDatabase
@@ -29,20 +30,22 @@ namespace Infrastructure.Databases
                  new Book(Guid.NewGuid(), "Pride and Prejudice", author7.Id, 1813)
             };
         }
-        public List<Book> GetAllBooks()
+        public virtual async Task<List<Book>> GetAllBooks()
         {
-            return Books;
+            var result = await Task.FromResult(Books);
+            return result;
         }
-        public Book? GetBook(Guid id)
+        public virtual Book? GetBook(Guid id)
         {
             return Books.FirstOrDefault(book => book.Id == id);
         }
-        public bool AddBook(Book book)
+        public virtual async Task<bool> AddBook(Book book)
         {
             Books.Add(book);
+            await Task.CompletedTask;
             return true;
         }
-        public bool UpdateBook(Guid idOfBook, Book updatedBook)
+        public virtual bool UpdateBook(Guid idOfBook, Book updatedBook)
         {
             Book? foundBook = Books.FirstOrDefault(book => book.Id == idOfBook);
 
@@ -60,35 +63,34 @@ namespace Infrastructure.Databases
 
             return true;
         }
-        public bool DeleteBook(Guid id)
+        public virtual bool DeleteBook(Guid id)
         {
             Book? foundBook = Books.FirstOrDefault(book => book.Id == id);
             if (foundBook != null)
             {
                 Books.Remove(foundBook);
+                return true;
             }
             else
             {
                 return false;
             }
-
-            return true;
         }
 
-        public List<Author> GetAllAuthors()
+        public virtual List<Author> GetAllAuthors()
         {
             return Authors;
         }
-        public Author? GetAuthor(Guid id)
+        public virtual Author? GetAuthor(Guid id)
         {
             return Authors.FirstOrDefault(author => author.Id == id);
         }
-        public bool AddAuthor(Author author)
+        public virtual bool AddAuthor(Author author)
         {
             Authors.Add(author);
             return true;
         }
-        public bool UpdateAuthor(Guid idOfAuthor, Author updatedAuthor)
+        public virtual bool UpdateAuthor(Guid idOfAuthor, Author updatedAuthor)
         {
             Author? foundAuthor = Authors.FirstOrDefault(author => author.Id == idOfAuthor);
 
@@ -106,7 +108,7 @@ namespace Infrastructure.Databases
 
             return true;
         }
-        public bool DeleteAuthor(Guid id)
+        public virtual bool DeleteAuthor(Guid id)
         {
             Author? foundAuthor = Authors.FirstOrDefault(author => author.Id == id);
             if (foundAuthor != null)

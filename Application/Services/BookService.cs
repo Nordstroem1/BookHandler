@@ -1,25 +1,26 @@
 ﻿using Application.Dtos;
-using Application.Interfaces;
 using Domain.Models;
 using Infrastructure.Databases;
 using AutoMapper;
+using System.Text.RegularExpressions;
+using MediatR;
 
 namespace Application.Services
 {
-    public class BookService : IBookService
+    public class BookService 
     {
         private readonly FakeDatabase _database;
         private readonly IMapper _mapper;
-        public BookService(FakeDatabase database, IMapper mapper)
+        public BookService(FakeDatabase database, IMapper mapper, IMediator mediator)
         {
             _mapper = mapper;
             _database = database;
         }
-        public List<Book> GetAllBooks()
+        public virtual async Task<List<Book>> GetAllBooks()
         {
             try
             {
-                List<Book> booklist = _database.GetAllBooks();
+                List<Book> booklist =  await _database.GetAllBooks();
 
                 if (booklist.Count == 0)
                 {
@@ -33,7 +34,7 @@ namespace Application.Services
                 throw new Exception("No books found");
             }
         }
-        public BookDto GetBook(Guid id)
+        public virtual BookDto GetBook(Guid id)
         {
             try
             {
@@ -51,57 +52,6 @@ namespace Application.Services
                 throw new Exception("Book not found");
             }
         }
-        public bool AddBook(Book book)
-        {
-            try
-            {
-                bool bookAdded = _database.AddBook(book);
 
-                if (bookAdded)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch
-            {
-                throw new Exception("Something went wrong when adding the book.");
-            }
-        }
-        public bool UpdateBook(Guid id, Book book)
-        {
-            try
-            {
-                bool bookUpdated = _database.UpdateBook(id, book);
-                if (!bookUpdated)
-                {
-                    throw new Exception("Book not found");
-                }
-                return true;
-            }
-            catch
-            {
-                throw new Exception("Something went wrong when updating the book.");
-            }
-        }
-        public bool DeleteBook(Guid id)
-        {
-            try
-            {
-                bool bookDeleted = _database.DeleteBook(id);
-                if (!bookDeleted)
-                {
-                    throw new Exception("Book not found");
-                }
-                return true;
-            }
-            catch
-            {
-                throw new Exception("Something went wrong when deleting the book.");
-            }
-        }
     }
 }

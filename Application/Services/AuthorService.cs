@@ -14,7 +14,7 @@ namespace Application.Services
             _database = database;
             _mapper = mapper;
         }
-        public List<Author> GetAllAuthors()
+        public virtual List<Author> GetAllAuthors()
         {
             try
             {
@@ -30,7 +30,7 @@ namespace Application.Services
                 throw new Exception("No authors found");
             }
         }
-        public AuthorDto GetAuthor(Guid id)
+        public virtual AuthorDto GetAuthor(Guid id)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace Application.Services
                 throw new Exception("Author not found");
             }
         }
-        public bool AddAuthor(Author author)
+        public virtual bool AddAuthor(Author author)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace Application.Services
                 return false;
             }
         }
-        public bool AddAuthorToBook(Guid bookId, Guid authorId)
+        public virtual bool AddAuthorToBook(Guid bookId, Guid authorId)
         {
             try
             {
@@ -92,7 +92,7 @@ namespace Application.Services
                 return false;
             }
         }
-        public bool UpdateAuthor(Guid id, Author updatedAuthor)
+        public virtual bool UpdateAuthor(Guid id, Author updatedAuthor)
         {
             try
             {
@@ -113,7 +113,7 @@ namespace Application.Services
                 return false;
             }
         }
-        public bool DeleteAuthor(Guid id)
+        public virtual bool DeleteAuthor(Guid id)
         {
             try
             {
