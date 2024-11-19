@@ -10,16 +10,16 @@ namespace Application.Books.Commands.UpdateBook
         {
             _database = database;
         }
-        public Task<bool> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                bool bookUpdated = _database.UpdateBook(request.Book.Id, request.Book);
+                bool bookUpdated = await _database.UpdateBook(request.Book.Id, request.Book);
                 if (!bookUpdated)
                 {
-                    return Task.FromResult(false);
+                    return await Task.FromResult(false);
                 }
-                return Task.FromResult(true);
+                return await Task.FromResult(true);
             }
             catch
             {

@@ -35,7 +35,7 @@ namespace Infrastructure.Databases
             var result = await Task.FromResult(Books);
             return result;
         }
-        public virtual Book? GetBook(Guid id)
+        public virtual async Task<Book?> GetBook(Guid id)
         {
             return Books.FirstOrDefault(book => book.Id == id);
         }
@@ -45,7 +45,7 @@ namespace Infrastructure.Databases
             await Task.CompletedTask;
             return true;
         }
-        public virtual bool UpdateBook(Guid idOfBook, Book updatedBook)
+        public virtual async Task<bool> UpdateBook(Guid idOfBook, Book updatedBook)
         {
             Book? foundBook = Books.FirstOrDefault(book => book.Id == idOfBook);
 
@@ -63,7 +63,7 @@ namespace Infrastructure.Databases
 
             return true;
         }
-        public virtual bool DeleteBook(Guid id)
+        public virtual async Task<bool> DeleteBook(Guid id)
         {
             Book? foundBook = Books.FirstOrDefault(book => book.Id == id);
             if (foundBook != null)
@@ -77,7 +77,7 @@ namespace Infrastructure.Databases
             }
         }
 
-        public virtual List<Author> GetAllAuthors()
+        public virtual async Task<List<Author>> GetAllAuthors()
         {
             return Authors;
         }
@@ -85,12 +85,12 @@ namespace Infrastructure.Databases
         {
             return Authors.FirstOrDefault(author => author.Id == id);
         }
-        public virtual bool AddAuthor(Author author)
+        public virtual async Task<bool> AddAuthor(Author author)
         {
             Authors.Add(author);
             return true;
         }
-        public virtual bool UpdateAuthor(Guid idOfAuthor, Author updatedAuthor)
+        public virtual async Task<bool> UpdateAuthor(Guid idOfAuthor, Author updatedAuthor)
         {
             Author? foundAuthor = Authors.FirstOrDefault(author => author.Id == idOfAuthor);
 
@@ -108,7 +108,7 @@ namespace Infrastructure.Databases
 
             return true;
         }
-        public virtual bool DeleteAuthor(Guid id)
+        public virtual async Task<bool> DeleteAuthor(Guid id)
         {
             Author? foundAuthor = Authors.FirstOrDefault(author => author.Id == id);
             if (foundAuthor != null)

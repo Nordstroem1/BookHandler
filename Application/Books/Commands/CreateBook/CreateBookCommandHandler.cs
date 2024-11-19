@@ -15,8 +15,9 @@ namespace Application.Books.Commands.CreateBook
         {
             try
             {
-                var existingBook = _database.GetBook(request.BookToAdd.Id);
-                if (existingBook != null)
+                var existingBook = await _database.GetBook(request.BookToAdd.Id);
+
+                if (existingBook.Title != string.Empty || existingBook.Id != Guid.Empty)
                 {
                     throw new Exception("Book already exists");
                 }

@@ -34,11 +34,11 @@ namespace Application.Services
                 throw new Exception("No books found");
             }
         }
-        public virtual BookDto GetBook(Guid id)
+        public virtual async Task<BookDto> GetBook(Guid id)
         {
             try
             {
-                Book? foundBook = _database.GetBook(id);
+                Book? foundBook = await _database.GetBook(id);
 
                 if (foundBook == null)
                 {

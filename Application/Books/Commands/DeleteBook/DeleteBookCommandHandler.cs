@@ -15,17 +15,22 @@ namespace Application.Books.Commands.DeleteBook
         {
             _database = database;
         }
-        public Task<bool> Handle(DeleteBookCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(DeleteBookCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                bool bookDeleted = _database.DeleteBook(Guid.Parse(request.BookId));
-                if (!bookDeleted)
+                var existingBook = await _database.GetBook(Guid.Parse(request.BookId));
+                if (existingBook.Id == Guid.Empty || existingBook.Title == string.Empty)
                 {
-                    return Task.FromResult(true);
+                    bool bookDeleted = await _database.DeleteBook(Guid.Parse(request.BookId));
+
+                    if (bookDeleted)
+                    {
+                        return await Task.FromResult(true);
+                    }
                 }
 
-                return Task.FromResult(false);
+                return await Task.FromResult(false);
             }
             catch
             {

@@ -1,18 +1,15 @@
 ﻿using Application.Books.Commands.CreateBook;
 using FakeItEasy;
 using Infrastructure.Databases;
-using AutoFixture;
-
 namespace BookHandlerTest.Fixture
 {
-    public class BookServiceFixture
+    public class CreateBookFixture
     {
         public FakeDatabase FakeDatabase { get; }
         public CreateBookCommandHandler CreateBookCommandHandler { get; }
-
-        public BookServiceFixture()
+        public CreateBookFixture()
         {
-            var fixture = new Fixture();
+            var fixture = new AutoFixture.Fixture();
             FakeDatabase = A.Fake<FakeDatabase>();
             CreateBookCommandHandler = new CreateBookCommandHandler(FakeDatabase);
         }
