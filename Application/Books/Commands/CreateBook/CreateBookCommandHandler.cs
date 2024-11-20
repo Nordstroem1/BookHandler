@@ -19,7 +19,7 @@ namespace Application.Books.Commands.CreateBook
 
                 if (existingBook.Title != string.Empty || existingBook.Id != Guid.Empty)
                 {
-                    throw new Exception("Book already exists");
+                    return await Task.FromResult(false);
                 }
 
                 bool bookAdded = await _database.AddBook(request.BookToAdd);

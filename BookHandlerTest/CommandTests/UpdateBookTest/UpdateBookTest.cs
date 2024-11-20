@@ -28,7 +28,7 @@ namespace BookHandlerTest.ServiceTests.UpdateBookTest
             var updatedBook = new Book(book.Id, "updatedBook", author1.Id, 1950);
             A.CallTo(() => _fakeDatabase.UpdateBook(book.Id, updatedBook)).Returns(true);
             //act
-            var result = await _updateBookCommandHandler.Handle(new UpdateBookCommand(updatedBook),CancellationToken.None);
+            var result = await _updateBookCommandHandler.Handle(new UpdateBookCommand(updatedBook), CancellationToken.None);
             //assert
             result.Should().BeTrue();
         }

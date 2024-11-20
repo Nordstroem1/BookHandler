@@ -8,6 +8,8 @@ using Application.Books.Commands.CreateBook;
 using Application.Books.Commands.UpdateBook;
 using Application.Books.Commands.DeleteBook;
 using Application.Books.Queries.Books;
+using Application.Books.Queries.Books.GetById;
+using Application.Books.Queries.Books.GetAllBooks;
 
 namespace BookApi.Controllers
 {
@@ -21,20 +23,20 @@ namespace BookApi.Controllers
             _mediator = mediator;
         }
 
-        //[HttpGet("GetAllBooks")]
-        //[OpenApiOperation("Retrieves all the books from the database.")]
-        //public IActionResult GetAllBooks()
-        //{
-        //    try
-        //    {
-        //        var books = _mediator.Send(new GetBookByIdCommand());
-        //        return books.Count == 0 ? NotFound("No books in list") : Ok(books);
-        //    }
-        //    catch
-        //    {
-        //        return StatusCode(500, "Internal server error");
-        //    }
-        //}
+        [HttpGet("GetAllBooks")]
+        [OpenApiOperation("Retrieves all the books from the database.")]
+        public IActionResult GetAllBooks()
+        {
+            try
+            {
+                var bookList = _mediator.Send(new GetAllBooksCommand()).Result;
+                return bookList.Count == 0 ? NotFound("No books in list") : Ok(bookList);
+            }
+            catch
+            {
+                return StatusCode(500, "Internal server error");
+            }
+        }
 
         [HttpGet("GetBook")]
         [OpenApiOperation("Retrieves a book from the database.")]
@@ -42,7 +44,7 @@ namespace BookApi.Controllers
         {
             try
             {
-                BookDto bookDto = _mediator.Send(new GetBookByIdCommand(Guid.Parse(id)));
+                var bookDto = _mediator.Send(new GetBookByIdCommand(Guid.Parse(id))).Result;
 
                 if (bookDto == null) { return NotFound("Book not found"); }
 
