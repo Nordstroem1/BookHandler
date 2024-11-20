@@ -2,7 +2,7 @@
 using Application.Books.Commands.UpdateBook;
 using FakeItEasy;
 using Infrastructure.Databases;
-namespace BookHandlerTest.Fixture
+namespace BookHandlerTest.BookTests.BookFixtures.CommandFixtures
 {
     public class UpdateBookFixture
     {

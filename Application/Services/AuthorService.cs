@@ -47,26 +47,6 @@
 //                throw new Exception("Author not found");
 //            }
 //        }
-//        public virtual bool AddAuthor(Author author)
-//        {
-//            try
-//            {
-//                bool authorAdded = _database.AddAuthor(author);
-//                if (authorAdded)
-//                {
-//                    return true;
-//                }
-//                else
-//                {
-//                    return false;
-//                }
-//            }
-//            catch
-//            {
-
-//                return false;
-//            }
-//        }
 //        public virtual bool AddAuthorToBook(Guid bookId, Guid authorId)
 //        {
 //            try
@@ -92,27 +72,7 @@
 //                return false;
 //            }
 //        }
-//        public virtual bool UpdateAuthor(Guid id, Author updatedAuthor)
-//        {
-//            try
-//            {
-//                bool authorUpdated = _database.UpdateAuthor(id, updatedAuthor);
-
-//                if (authorUpdated)
-//                {
-//                    return true;
-//                }
-//                else
-//                {
-//                    return false;
-//                }
-//            }
-//            catch
-//            {
-
-//                return false;
-//            }
-//        }
+        
 //        public virtual bool DeleteAuthor(Guid id)
 //        {
 //            try

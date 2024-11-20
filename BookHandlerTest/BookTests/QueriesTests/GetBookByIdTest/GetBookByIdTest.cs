@@ -1,16 +1,16 @@
 ﻿using Application.Books.Queries.Books.GetById;
-using BookHandlerTest.Fixtures;
 using FakeItEasy;
 using FluentAssertions;
 using Domain.Models;
 using Application.Dtos;
+using BookHandlerTest.BookTests.BookFixtures.QueryFixtures;
 
-namespace BookHandlerTest.CommandTests.QueriesTests.GetBookByIdTest
+namespace BookHandlerTest.BookTests.QueriesTests.GetBookByIdTest
 {
     public class GetBookByIdTest
     {
         [Fact]
-        [Trait("QueryTests", "GetBookById")]
+        [Trait("Book", "GetBookById")]
         public async Task GetBookById_ShouldReturnABook()
         {
             // Arrange

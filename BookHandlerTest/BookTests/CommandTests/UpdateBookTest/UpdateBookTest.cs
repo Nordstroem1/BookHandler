@@ -1,17 +1,15 @@
 ﻿using Application.Books.Commands.UpdateBook;
-using AutoMapper;
 using Domain.Models;
 using FakeItEasy;
 using FluentAssertions;
 using Infrastructure.Databases;
-using BookHandlerTest.Fixture;
+using BookHandlerTest.BookTests.BookFixtures.CommandFixtures;
 
-namespace BookHandlerTest.ServiceTests.UpdateBookTest
+namespace BookHandlerTest.BookTests.CommandTests.UpdateBookTest
 {
     public class UpdateBookTest : IClassFixture<UpdateBookFixture>
     {
         private readonly FakeDatabase _fakeDatabase;
-        private readonly IMapper _mapper;
         private readonly UpdateBookCommandHandler _updateBookCommandHandler;
         public UpdateBookTest(UpdateBookFixture fixture)
         {
@@ -19,7 +17,7 @@ namespace BookHandlerTest.ServiceTests.UpdateBookTest
             _updateBookCommandHandler = fixture.UpdateBookCommandHandler;
         }
         [Fact]
-        [Trait("UpdateBook", "HappyCases")]
+        [Trait("Book", "UpdateBook")]
         public async Task UpdateBook_WhenCalled_ShouldReturnTrue()
         {
             //arrange

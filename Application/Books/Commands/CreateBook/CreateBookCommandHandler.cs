@@ -22,7 +22,7 @@ namespace Application.Books.Commands.CreateBook
                     return await Task.FromResult(false);
                 }
 
-                bool bookAdded = await _database.AddBook(request.BookToAdd);
+                bool bookAdded = await _database.CreateBook(request.BookToAdd);
 
                 if (bookAdded)
                 {

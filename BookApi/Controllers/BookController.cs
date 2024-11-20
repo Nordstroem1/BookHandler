@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
-using Application.Services;
-using Application.Dtos;
 using Domain.Models;
 using MediatR;
 using Application.Books.Commands.CreateBook;
 using Application.Books.Commands.UpdateBook;
 using Application.Books.Commands.DeleteBook;
-using Application.Books.Queries.Books;
 using Application.Books.Queries.Books.GetById;
 using Application.Books.Queries.Books.GetAllBooks;
 
@@ -56,7 +53,7 @@ namespace BookApi.Controllers
             }
         }
 
-        [HttpPost("AddBook")]
+        [HttpPost("CreateBook")]
         [OpenApiOperation("Adds a book to the database.")]
         public IActionResult AddBook([FromBody] Book book)
         {

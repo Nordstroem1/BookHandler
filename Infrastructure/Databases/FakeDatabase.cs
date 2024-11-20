@@ -39,7 +39,7 @@ namespace Infrastructure.Databases
         {
             return Books.FirstOrDefault(book => book.Id == id);
         }
-        public virtual async Task<bool> AddBook(Book book)
+        public virtual async Task<bool> CreateBook(Book book)
         {
             Books.Add(book);
             await Task.CompletedTask;
@@ -85,14 +85,14 @@ namespace Infrastructure.Databases
         {
             return Authors.FirstOrDefault(author => author.Id == id);
         }
-        public virtual async Task<bool> AddAuthor(Author author)
+        public virtual async Task<bool> CreateAuthor(Author author)
         {
             Authors.Add(author);
             return true;
         }
-        public virtual async Task<bool> UpdateAuthor(Guid idOfAuthor, Author updatedAuthor)
+        public virtual async Task<bool> UpdateAuthor(Author updatedAuthor)
         {
-            Author? foundAuthor = Authors.FirstOrDefault(author => author.Id == idOfAuthor);
+            Author? foundAuthor = Authors.FirstOrDefault(updatedAuthor);
 
             if (foundAuthor != null)
             {

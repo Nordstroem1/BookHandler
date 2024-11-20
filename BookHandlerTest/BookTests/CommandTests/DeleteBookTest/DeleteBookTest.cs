@@ -1,12 +1,12 @@
 ﻿using Application.Books.Commands.DeleteBook;
 using AutoFixture;
-using BookHandlerTest.Fixture;
 using Infrastructure.Databases;
 using FakeItEasy;
 using Domain.Models;
 using FluentAssertions;
+using BookHandlerTest.BookTests.BookFixtures.CommandFixtures;
 
-namespace BookHandlerTest.ServiceTests.DeleteBookTest
+namespace BookHandlerTest.BookTests.CommandTests.DeleteBookTest
 {
     public class DeleteBookTest : IClassFixture<DeleteBookFixture>
     {
@@ -19,7 +19,7 @@ namespace BookHandlerTest.ServiceTests.DeleteBookTest
         }
 
         [Fact]
-        [Trait("DeleteBook", "HappyCases")]
+        [Trait("Book", "DeleteBook")]
         public async Task DeleteBook_HappyCases_ShouldReturnTrue()
         {
             //arrange
@@ -27,7 +27,7 @@ namespace BookHandlerTest.ServiceTests.DeleteBookTest
             var book = new Book(Guid.NewGuid(), "Book1", author1.Id, 2000);
 
             // Act
-            A.CallTo(() => _fakeDatabase.DeleteBook(book.Id)).Returns(Task.FromResult(true));
+            A.CallTo(() => _fakeDatabase.DeleteBook(book.Id)).Returns(true);
             DeleteBookCommand command = new DeleteBookCommand(book.Id.ToString());
             var result = await _deleteBookCommandHandler.Handle(command, CancellationToken.None);
 

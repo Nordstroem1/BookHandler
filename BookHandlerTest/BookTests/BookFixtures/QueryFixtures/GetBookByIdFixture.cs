@@ -2,11 +2,10 @@
 using FakeItEasy;
 using Application.Books.Queries.Books.GetById;
 using AutoMapper;
-using FakeItEasy.Sdk;
 using Application.MappingProfiles;
-namespace BookHandlerTest.Fixtures
+namespace BookHandlerTest.BookTests.BookFixtures.QueryFixtures
 {
-    public class GetBookByIdFixture 
+    public class GetBookByIdFixture
     {
         public FakeDatabase FakeDatabase { get; }
         public GetBookByIdQueryHandler GetBookByIdCommand { get; }

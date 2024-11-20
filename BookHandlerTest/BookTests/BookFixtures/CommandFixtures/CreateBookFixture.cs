@@ -1,7 +1,7 @@
 ﻿using Application.Books.Commands.CreateBook;
 using FakeItEasy;
 using Infrastructure.Databases;
-namespace BookHandlerTest.Fixture
+namespace BookHandlerTest.BookTests.BookFixtures.CommandFixtures
 {
     public class CreateBookFixture
     {

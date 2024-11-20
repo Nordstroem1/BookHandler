@@ -16,4 +16,9 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Authors\Commands\DeleteAuthor\" />
+    <Folder Include="Authors\Queries\" />
+  </ItemGroup>
+
 </Project>
