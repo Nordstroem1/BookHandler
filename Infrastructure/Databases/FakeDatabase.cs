@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using System.Diagnostics.Metrics;
 namespace Infrastructure.Databases
 {
     public class FakeDatabase
@@ -29,20 +30,22 @@ namespace Infrastructure.Databases
                  new Book(Guid.NewGuid(), "Pride and Prejudice", author7.Id, 1813)
             };
         }
-        public List<Book> GetAllBooks()
+        public virtual async Task<List<Book>> GetAllBooks()
         {
-            return Books;
+            var result = await Task.FromResult(Books);
+            return result;
         }
-        public Book? GetBook(Guid id)
+        public virtual async Task<Book?> GetBookById(Guid id)
         {
             return Books.FirstOrDefault(book => book.Id == id);
         }
-        public bool AddBook(Book book)
+        public virtual async Task<bool> CreateBook(Book book)
         {
             Books.Add(book);
+            await Task.CompletedTask;
             return true;
         }
-        public bool UpdateBook(Guid idOfBook, Book updatedBook)
+        public virtual async Task<bool> UpdateBook(Guid idOfBook, Book updatedBook)
         {
             Book? foundBook = Books.FirstOrDefault(book => book.Id == idOfBook);
 
@@ -60,53 +63,51 @@ namespace Infrastructure.Databases
 
             return true;
         }
-        public bool DeleteBook(Guid id)
+        public virtual async Task<bool> DeleteBook(Guid id)
         {
             Book? foundBook = Books.FirstOrDefault(book => book.Id == id);
             if (foundBook != null)
             {
                 Books.Remove(foundBook);
+                return true;
             }
             else
             {
                 return false;
             }
-
-            return true;
         }
 
-        public List<Author> GetAllAuthors()
+        public virtual async Task<List<Author>> GetAllAuthors()
         {
             return Authors;
         }
-        public Author? GetAuthor(Guid id)
+        public virtual async Task<Author?> GetAuthorById(Guid id)
         {
             return Authors.FirstOrDefault(author => author.Id == id);
         }
-        public bool AddAuthor(Author author)
+        public virtual async Task<bool> CreateAuthor(Author author)
         {
             Authors.Add(author);
             return true;
         }
-        public bool UpdateAuthor(Guid idOfAuthor, Author updatedAuthor)
+        public virtual async Task<bool> UpdateAuthor(Author updatedAuthor)
         {
-            Author? foundAuthor = Authors.FirstOrDefault(author => author.Id == idOfAuthor);
+            Author? foundAuthor = Authors.FirstOrDefault(author => author.Id == updatedAuthor.Id);
 
             if (foundAuthor != null)
             {
                 foundAuthor.Name = updatedAuthor.Name;
                 foundAuthor.DateOfBirth = updatedAuthor.DateOfBirth;
                 foundAuthor.PlaceOfBirth = updatedAuthor.PlaceOfBirth;
+
+                return true;
             }
             else
             {
-
                 return false;
             }
-
-            return true;
         }
-        public bool DeleteAuthor(Guid id)
+        public virtual async Task<bool> DeleteAuthor(Guid id)
         {
             Author? foundAuthor = Authors.FirstOrDefault(author => author.Id == id);
             if (foundAuthor != null)

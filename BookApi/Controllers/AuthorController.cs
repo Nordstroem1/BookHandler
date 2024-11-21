@@ -1,28 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Application.Services;
 using Domain.Models;
-using Application.Dtos;
-
+using MediatR;
+using Application.Authors.Commands.CreateAuthor;
+using Application.Authors.Commands.UpdateAuthor;
+using Application.Authors.Commands.DeleteAuthor;
+using Application.Authors.Queries.GetAllAuthors;
+using Application.Authors.Queries.GetAuthorById;
 namespace BookApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class AuthorController : Controller
     {
-        private readonly AuthorService _authorService;
+        private readonly IMediator _mediator;
 
-        public AuthorController(AuthorService authorService)
+        public AuthorController(IMediator mediator)
         {
-            _authorService = authorService;
+            _mediator = mediator;   
         }
 
         [HttpGet("GetAuhtor")]
-        public IActionResult GetAuthor([FromQuery] string id)
+        public IActionResult GetAuthorById([FromQuery] string id)
         {
             try
             {
-                AuthorDto authorDto = _authorService.GetAuthor(Guid.Parse(id));
-                if (authorDto == null) { return NotFound("Author not found"); }
+                var authorDto = _mediator.Send(new GetAuthorByIdCommand(Guid.Parse(id))).Result;
+
+                if (authorDto == null) 
+                { 
+                    return NotFound("Author not found"); 
+                }
 
                 return Ok(authorDto);
             }
@@ -37,7 +44,8 @@ namespace BookApi.Controllers
         {
             try
             {
-                var authors = _authorService.GetAllAuthors();
+                var authors = _mediator.Send(new GetAllAuthorsCommand()).Result;
+
                 return authors.Count == 0 ? NotFound("No authors in list") : Ok(authors);
             }
             catch
@@ -46,12 +54,12 @@ namespace BookApi.Controllers
             }
         }
 
-        [HttpPost("AddAuthor")]
+        [HttpPost("CreateAuthor")]
         public IActionResult AddAuthor([FromBody] Author author)
         {
             try
             {
-                bool authorAdded = _authorService.AddAuthor(author);
+                bool authorAdded = _mediator.Send(new CreateAuthorCommand(author)).Result;
                 if (authorAdded)
                 {
                     return Ok("Author added");
@@ -72,7 +80,7 @@ namespace BookApi.Controllers
         {
             try
             {
-                bool authorUpdated = _authorService.UpdateAuthor(Guid.Parse(id), author);
+                bool authorUpdated = _mediator.Send(new UpdateAuthorCommand(author)).Result;
 
                 if (authorUpdated)
                 {
@@ -93,7 +101,8 @@ namespace BookApi.Controllers
         {
             try
             {
-                bool authorDeleted = _authorService.DeleteAuthor(Guid.Parse(id));
+                bool authorDeleted = _mediator.Send(new DeleteAuthorCommand(Guid.Parse(id))).Result;
+                
                 if (authorDeleted)
                 {
                     return Ok("Author deleted");

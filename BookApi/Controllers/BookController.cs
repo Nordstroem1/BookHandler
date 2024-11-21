@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
-using Application.Services;
-using Application.Dtos;
 using Domain.Models;
+using MediatR;
+using Application.Books.Commands.CreateBook;
+using Application.Books.Commands.UpdateBook;
+using Application.Books.Commands.DeleteBook;
+using Application.Books.Queries.GetAllBooks;
+using Application.Books.Queries.GetById;
 
 namespace BookApi.Controllers
 {
@@ -10,10 +14,10 @@ namespace BookApi.Controllers
     [Route("api/[controller]")]
     public class BookController : Controller
     {
-        private readonly BookService _bookService;
-        public BookController(BookService bookService)
+        private readonly IMediator _mediator;
+        public BookController(IMediator mediator)
         {
-            _bookService = bookService;
+            _mediator = mediator;
         }
 
         [HttpGet("GetAllBooks")]
@@ -22,8 +26,8 @@ namespace BookApi.Controllers
         {
             try
             {
-                var books = _bookService.GetAllBooks();
-                return books.Count == 0 ? NotFound("No books in list") : Ok(books);
+                var bookList = _mediator.Send(new GetAllBooksCommand()).Result;
+                return bookList.Count == 0 ? NotFound("No books in list") : Ok(bookList);
             }
             catch
             {
@@ -31,13 +35,13 @@ namespace BookApi.Controllers
             }
         }
 
-        [HttpGet("GetBook")]
+        [HttpGet("GetBookById")]
         [OpenApiOperation("Retrieves a book from the database.")]
         public IActionResult GetBook([FromQuery] string id)
         {
             try
             {
-                BookDto bookDto = _bookService.GetBook(Guid.Parse(id));
+                var bookDto = _mediator.Send(new GetBookByIdCommand(Guid.Parse(id))).Result;
 
                 if (bookDto == null) { return NotFound("Book not found"); }
 
@@ -49,13 +53,13 @@ namespace BookApi.Controllers
             }
         }
 
-        [HttpPost("AddBook")]
+        [HttpPost("CreateBook")]
         [OpenApiOperation("Adds a book to the database.")]
         public IActionResult AddBook([FromBody] Book book)
         {
             try
             {
-                bool bookAdded = _bookService.AddBook(book);
+                bool bookAdded = _mediator.Send(new CreateBookCommand(book)).Result;
 
                 if (bookAdded)
                 {
@@ -77,7 +81,7 @@ namespace BookApi.Controllers
         {
             try
             {
-                bool bookUpdated = _bookService.UpdateBook(Guid.Parse(idOfChosenBook), book);
+                bool bookUpdated = _mediator.Send(new UpdateBookCommand(book)).Result;
 
                 if (bookUpdated)
                 {
@@ -99,7 +103,7 @@ namespace BookApi.Controllers
         {
             try
             {
-                bool bookDeleted = _bookService.DeleteBook(Guid.Parse(id));
+                bool bookDeleted = _mediator.Send(new DeleteBookCommand(id)).Result;
                 if (bookDeleted)
                 {
                     return Ok("Book deleted");
