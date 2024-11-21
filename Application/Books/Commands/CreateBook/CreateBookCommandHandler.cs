@@ -15,7 +15,7 @@ namespace Application.Books.Commands.CreateBook
         {
             try
             {
-                var existingBook = await _database.GetBook(request.BookToAdd.Id);
+                var existingBook = await _database.GetBookById(request.BookToAdd.Id);
 
                 if (existingBook.Title != string.Empty || existingBook.Id != Guid.Empty)
                 {

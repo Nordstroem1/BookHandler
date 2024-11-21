@@ -35,7 +35,7 @@ namespace Infrastructure.Databases
             var result = await Task.FromResult(Books);
             return result;
         }
-        public virtual async Task<Book?> GetBook(Guid id)
+        public virtual async Task<Book?> GetBookById(Guid id)
         {
             return Books.FirstOrDefault(book => book.Id == id);
         }
@@ -81,7 +81,7 @@ namespace Infrastructure.Databases
         {
             return Authors;
         }
-        public virtual Author? GetAuthor(Guid id)
+        public virtual async Task<Author?> GetAuthorById(Guid id)
         {
             return Authors.FirstOrDefault(author => author.Id == id);
         }
@@ -92,21 +92,20 @@ namespace Infrastructure.Databases
         }
         public virtual async Task<bool> UpdateAuthor(Author updatedAuthor)
         {
-            Author? foundAuthor = Authors.FirstOrDefault(updatedAuthor);
+            Author? foundAuthor = Authors.FirstOrDefault(author => author.Id == updatedAuthor.Id);
 
             if (foundAuthor != null)
             {
                 foundAuthor.Name = updatedAuthor.Name;
                 foundAuthor.DateOfBirth = updatedAuthor.DateOfBirth;
                 foundAuthor.PlaceOfBirth = updatedAuthor.PlaceOfBirth;
+
+                return true;
             }
             else
             {
-
                 return false;
             }
-
-            return true;
         }
         public virtual async Task<bool> DeleteAuthor(Guid id)
         {

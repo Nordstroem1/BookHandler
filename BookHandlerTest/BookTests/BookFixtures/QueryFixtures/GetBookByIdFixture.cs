@@ -1,8 +1,8 @@
 ﻿using Infrastructure.Databases;
 using FakeItEasy;
-using Application.Books.Queries.Books.GetById;
 using AutoMapper;
 using Application.MappingProfiles;
+using Application.Books.Queries.GetById;
 namespace BookHandlerTest.BookTests.BookFixtures.QueryFixtures
 {
     public class GetBookByIdFixture

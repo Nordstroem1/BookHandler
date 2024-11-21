@@ -5,8 +5,8 @@ using MediatR;
 using Application.Books.Commands.CreateBook;
 using Application.Books.Commands.UpdateBook;
 using Application.Books.Commands.DeleteBook;
-using Application.Books.Queries.Books.GetById;
-using Application.Books.Queries.Books.GetAllBooks;
+using Application.Books.Queries.GetAllBooks;
+using Application.Books.Queries.GetById;
 
 namespace BookApi.Controllers
 {
@@ -35,7 +35,7 @@ namespace BookApi.Controllers
             }
         }
 
-        [HttpGet("GetBook")]
+        [HttpGet("GetBookById")]
         [OpenApiOperation("Retrieves a book from the database.")]
         public IActionResult GetBook([FromQuery] string id)
         {

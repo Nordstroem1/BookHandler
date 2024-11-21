@@ -1,8 +1,13 @@
-﻿namespace Domain.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Domain.Models
 {
     public class Book
     {
+        [Required]
         public Guid Id { get; private set; }
+        [MinLength(3)]
+        [MaxLength(70)]
         public string Title { get; set; }
         public Guid AuthorId { get; set; }
         public int Pages { get; set; }

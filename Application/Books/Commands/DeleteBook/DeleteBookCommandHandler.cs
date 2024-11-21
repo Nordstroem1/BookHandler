@@ -19,7 +19,7 @@ namespace Application.Books.Commands.DeleteBook
         {
             try
             {
-                var existingBook = await _database.GetBook(Guid.Parse(request.BookId));
+                var existingBook = await _database.GetBookById(Guid.Parse(request.BookId));
                 if (existingBook.Id == Guid.Empty || existingBook.Title == string.Empty)
                 {
                     bool bookDeleted = await _database.DeleteBook(Guid.Parse(request.BookId));

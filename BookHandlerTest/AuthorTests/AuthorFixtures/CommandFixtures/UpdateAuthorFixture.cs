@@ -1,7 +1,4 @@
-﻿
-
-using Application.Authors.Commands.CreateAuthor;
-using Application.Authors.Commands.UpdateAuthor;
+﻿using Application.Authors.Commands.UpdateAuthor;
 using FakeItEasy;
 using Infrastructure.Databases;
 

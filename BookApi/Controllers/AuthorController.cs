@@ -3,6 +3,9 @@ using Domain.Models;
 using MediatR;
 using Application.Authors.Commands.CreateAuthor;
 using Application.Authors.Commands.UpdateAuthor;
+using Application.Authors.Commands.DeleteAuthor;
+using Application.Authors.Queries.GetAllAuthors;
+using Application.Authors.Queries.GetAuthorById;
 namespace BookApi.Controllers
 {
     [ApiController]
@@ -16,35 +19,40 @@ namespace BookApi.Controllers
             _mediator = mediator;   
         }
 
-        //[HttpGet("GetAuhtor")]
-        //public IActionResult GetAuthor([FromQuery] string id)
-        //{
-        //    try
-        //    {
-        //        AuthorDto authorDto = _authorService.GetAuthor(Guid.Parse(id));
-        //        if (authorDto == null) { return NotFound("Author not found"); }
+        [HttpGet("GetAuhtor")]
+        public IActionResult GetAuthorById([FromQuery] string id)
+        {
+            try
+            {
+                var authorDto = _mediator.Send(new GetAuthorByIdCommand(Guid.Parse(id))).Result;
 
-        //        return Ok(authorDto);
-        //    }
-        //    catch
-        //    {
-        //        return StatusCode(500, "Internal server error");
-        //    }
-        //}
+                if (authorDto == null) 
+                { 
+                    return NotFound("Author not found"); 
+                }
 
-        //[HttpGet("GetAllAuthors")]
-        //public IActionResult GetAllAuthors()
-        //{
-        //    try
-        //    {
-        //        var authors = _authorService.GetAllAuthors();
-        //        return authors.Count == 0 ? NotFound("No authors in list") : Ok(authors);
-        //    }
-        //    catch
-        //    {
-        //        return StatusCode(500, "Internal server error");
-        //    }
-        //}
+                return Ok(authorDto);
+            }
+            catch
+            {
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpGet("GetAllAuthors")]
+        public IActionResult GetAllAuthors()
+        {
+            try
+            {
+                var authors = _mediator.Send(new GetAllAuthorsCommand()).Result;
+
+                return authors.Count == 0 ? NotFound("No authors in list") : Ok(authors);
+            }
+            catch
+            {
+                return StatusCode(500, "Internal server error");
+            }
+        }
 
         [HttpPost("CreateAuthor")]
         public IActionResult AddAuthor([FromBody] Author author)
@@ -88,25 +96,26 @@ namespace BookApi.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
-        //        [HttpDelete("DeleteAuthor")]
-        //        public IActionResult DeleteAuthor([FromQuery] string id)
-        //        {
-        //            try
-        //            {
-        //                bool authorDeleted = _authorService.DeleteAuthor(Guid.Parse(id));
-        //                if (authorDeleted)
-        //                {
-        //                    return Ok("Author deleted");
-        //                }
-        //                else
-        //                {
-        //                    return BadRequest("Could not delete Author.");
-        //                }
-        //            }
-        //            catch
-        //            {
-        //                return StatusCode(500, "Internal server error");
-        //            }
-        //        }
+        [HttpDelete("DeleteAuthor")]
+        public IActionResult DeleteAuthor([FromQuery] string id)
+        {
+            try
+            {
+                bool authorDeleted = _mediator.Send(new DeleteAuthorCommand(Guid.Parse(id))).Result;
+                
+                if (authorDeleted)
+                {
+                    return Ok("Author deleted");
+                }
+                else
+                {
+                    return BadRequest("Could not delete Author.");
+                }
+            }
+            catch
+            {
+                return StatusCode(500, "Internal server error");
+            }
+        }
     }
 }

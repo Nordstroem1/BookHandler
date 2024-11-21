@@ -1,4 +1,4 @@
-﻿using Application.Books.Queries.Books.GetAllBooks;
+﻿using Application.Books.Queries.GetAllBooks;
 using FakeItEasy;
 using Infrastructure.Databases;
 
@@ -12,7 +12,6 @@ namespace BookHandlerTest.BookTests.BookFixtures.QueryFixtures
         {
             var fixture = new AutoFixture.Fixture();
             FakeDatabase = A.Fake<FakeDatabase>();
-
             GetBookByIdCommand = new GetAllBooksCommandHandler(FakeDatabase);
         }
     }

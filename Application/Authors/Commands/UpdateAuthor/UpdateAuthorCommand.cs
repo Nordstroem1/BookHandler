@@ -6,7 +6,7 @@ namespace Application.Authors.Commands.UpdateAuthor
     {
         public UpdateAuthorCommand(Author authorToUpdate) 
         {
-            authorToUpdate = Author;
+            Author = authorToUpdate;
         }
         public Author Author { get; set; }
     }

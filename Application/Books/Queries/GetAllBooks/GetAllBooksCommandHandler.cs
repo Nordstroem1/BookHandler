@@ -2,7 +2,7 @@
 using MediatR;
 using Domain.Models;
 
-namespace Application.Books.Queries.Books.GetAllBooks
+namespace Application.Books.Queries.GetAllBooks
 {
     public class GetAllBooksCommandHandler : IRequestHandler<GetAllBooksCommand, List<Book>>
     {
@@ -14,7 +14,7 @@ namespace Application.Books.Queries.Books.GetAllBooks
 
         public async Task<List<Book>> Handle(GetAllBooksCommand request, CancellationToken cancellationToken)
         {
-            var bookList = await Task.Run(()=>(_fakeDatabase.GetAllBooks()));
+            var bookList = await Task.Run(() => _fakeDatabase.GetAllBooks());
 
             return bookList;
         }

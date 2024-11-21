@@ -8,6 +8,8 @@ namespace BookHandlerTest.AuthorTests.CommandTests.UpdateAuthorTest
 {
     public class UpdateAuthorTest
     {
+        [Fact]
+        [Trait("Author", "UpdateAuthor")]
         public async Task UpdateAuthor_ShouldReturnTrueAsync()
         {
             // Arrange

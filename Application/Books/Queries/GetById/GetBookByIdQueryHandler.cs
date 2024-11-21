@@ -1,10 +1,9 @@
 ﻿using Application.Dtos;
-using Domain.Models;
 using Infrastructure.Databases;
 using MediatR;
 using AutoMapper;
 
-namespace Application.Books.Queries.Books.GetById
+namespace Application.Books.Queries.GetById
 {
     public class GetBookByIdQueryHandler : IRequestHandler<GetBookByIdCommand, BookDto>
     {
@@ -21,7 +20,7 @@ namespace Application.Books.Queries.Books.GetById
             {
                 return null;
             }
-            var book = _fakeDatabase.GetBook(request.BookId).Result;
+            var book = _fakeDatabase.GetBookById(request.BookId).Result;
 
             return _mapper.Map<BookDto>(book);
         }

@@ -9,7 +9,7 @@ namespace BookHandlerTest.AuthorTests.CommandTests.CreateAuthorTest
     public class CreateAuthorTest
     {
         [Fact]
-        [Trait("CreateAuthor", "CreateAuthor")]
+        [Trait("Author", "CreateAuthor")]
         public async Task CreateAuthor_WhenCalled_ShouldReturnTrue()
         {
             // Arrange

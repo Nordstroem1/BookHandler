@@ -1,8 +1,8 @@
 ﻿using Domain.Models;
 using FluentAssertions;
 using FakeItEasy;
-using Application.Books.Queries.Books.GetAllBooks;
 using BookHandlerTest.BookTests.BookFixtures.QueryFixtures;
+using Application.Books.Queries.GetAllBooks;
 
 namespace BookHandlerTest.BookTests.QueriesTests.GetAllbooksTest
 {
