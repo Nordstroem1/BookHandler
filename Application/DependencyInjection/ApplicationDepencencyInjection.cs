@@ -13,13 +13,12 @@ namespace Application.DependencyInjection
             var assembly = typeof(ApplicationDepencencyInjection).Assembly;
 
             services.AddMediatR(config => config.RegisterServicesFromAssemblies(assembly));
-            
-            var config = new MapperConfiguration(cfg =>
+
+            services.AddAutoMapper(config =>
             {
-                cfg.AddProfile<BookmappingProfile>();
-                cfg.AddProfile<AuthormappingProfile>();
-            });
-            services.AddSingleton(config.CreateMapper());
+                config.AddProfile<BookmappingProfile>();
+                config.AddProfile<AuthormappingProfile>();
+            }, assembly);
 
             return services;
         }
