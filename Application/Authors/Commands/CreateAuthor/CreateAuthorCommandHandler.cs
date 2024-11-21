@@ -1,5 +1,4 @@
-﻿using Domain.Models;
-using Infrastructure.Databases;
+﻿using Infrastructure.Databases;
 using MediatR;
 
 namespace Application.Authors.Commands.CreateAuthor

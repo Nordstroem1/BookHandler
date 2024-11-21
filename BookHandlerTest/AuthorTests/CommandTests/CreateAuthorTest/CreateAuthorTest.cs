@@ -1,4 +1,5 @@
 ﻿using Application.Authors.Commands.CreateAuthor;
+using Application.Dtos;
 using BookHandlerTest.Fixtures.Author.CommandFixtures;
 using Domain.Models;
 using FakeItEasy;
@@ -14,7 +15,7 @@ namespace BookHandlerTest.AuthorTests.CommandTests.CreateAuthorTest
         {
             // Arrange
             var fixture = new CreateAuthorFixture();
-            var author = new Author(Guid.NewGuid(), "author1", new DateOnly(2000, 03, 27), "Sundsvall");
+            var author = new Author(Guid.NewGuid(),"author1", new DateOnly(2000, 03, 27), "Sundsvall");
             A.CallTo(() => fixture.fakeDatabase.CreateAuthor(author)).Returns(true);
             var command = new CreateAuthorCommand(author);
             // Act

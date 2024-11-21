@@ -1,4 +1,6 @@
-﻿using Domain.Models;
+﻿using Application.Dtos;
+using AutoMapper;
+using Domain.Models;
 using MediatR;
 
 namespace Application.Authors.Commands.CreateAuthor

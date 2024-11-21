@@ -6,6 +6,7 @@ using Application.Authors.Commands.UpdateAuthor;
 using Application.Authors.Commands.DeleteAuthor;
 using Application.Authors.Queries.GetAllAuthors;
 using Application.Authors.Queries.GetAuthorById;
+using AutoMapper;
 namespace BookApi.Controllers
 {
     [ApiController]
