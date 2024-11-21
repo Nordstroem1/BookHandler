@@ -8,8 +8,8 @@ namespace Application.Books.Queries.GetById
     public class GetBookByIdQueryHandler : IRequestHandler<GetBookByIdCommand, BookDto>
     {
         public FakeDatabase _fakeDatabase { get; }
-        public Mapper _mapper { get; }
-        public GetBookByIdQueryHandler(FakeDatabase fakeDatabase, Mapper mapper)
+        public IMapper _mapper { get; }
+        public GetBookByIdQueryHandler(FakeDatabase fakeDatabase, IMapper mapper)
         {
             _fakeDatabase = fakeDatabase;
             _mapper = mapper;

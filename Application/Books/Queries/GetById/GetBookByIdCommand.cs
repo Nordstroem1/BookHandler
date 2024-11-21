@@ -1,5 +1,4 @@
 ﻿using Application.Dtos;
-using Infrastructure.Databases;
 using MediatR;
 
 namespace Application.Books.Queries.GetById

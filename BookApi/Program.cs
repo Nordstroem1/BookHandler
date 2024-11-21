@@ -9,7 +9,6 @@ builder.Services.AddSwaggerGen(c => c.EnableAnnotations());
 builder.Services.AddApplicationLayer();
 builder.Services.AddInfrastructureLayer();
 
-
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
