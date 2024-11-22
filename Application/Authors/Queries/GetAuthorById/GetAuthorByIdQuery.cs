@@ -2,9 +2,9 @@
 using MediatR;
 namespace Application.Authors.Queries.GetAuthorById
 {
-    public class GetAuthorByIdCommand : IRequest<AuthorDto>
+    public class GetAuthorByIdQuery : IRequest<AuthorDto>
     {
-        public GetAuthorByIdCommand(Guid authorId)
+        public GetAuthorByIdQuery(Guid authorId)
         {
             AuthorId = authorId;
         }

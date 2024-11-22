@@ -19,7 +19,7 @@ namespace BookHandlerTest.BookTests.QueriesTests.GetBookByIdTest
             var book = new Book(Guid.NewGuid(), "Book1", author1.Id, 2000);
             var bookDto = new BookDto(book.Id, book.Title);
             A.CallTo(() => fixture.FakeDatabase.GetBookById(book.Id)).Returns(book);
-            var query = new GetBookByIdCommand(book.Id);
+            var query = new GetBookByIdQuery(book.Id);
 
             // Act
             var result = await fixture.GetBookByIdCommand.Handle(query, CancellationToken.None);

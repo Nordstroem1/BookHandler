@@ -7,6 +7,7 @@ using Application.Authors.Commands.DeleteAuthor;
 using Application.Authors.Queries.GetAllAuthors;
 using Application.Authors.Queries.GetAuthorById;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 namespace BookApi.Controllers
 {
     [ApiController]
@@ -20,12 +21,13 @@ namespace BookApi.Controllers
             _mediator = mediator;   
         }
 
+        [Authorize]
         [HttpGet("GetAuhtor")]
         public IActionResult GetAuthorById([FromQuery] string id)
         {
             try
             {
-                var authorDto = _mediator.Send(new GetAuthorByIdCommand(Guid.Parse(id))).Result;
+                var authorDto = _mediator.Send(new GetAuthorByIdQuery(Guid.Parse(id))).Result;
 
                 if (authorDto == null) 
                 { 
@@ -40,12 +42,13 @@ namespace BookApi.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("GetAllAuthors")]
         public IActionResult GetAllAuthors()
         {
             try
             {
-                var authors = _mediator.Send(new GetAllAuthorsCommand()).Result;
+                var authors = _mediator.Send(new GetAllAuthorsQueryHandler()).Result;
 
                 return authors.Count == 0 ? NotFound("No authors in list") : Ok(authors);
             }
@@ -55,6 +58,7 @@ namespace BookApi.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost("CreateAuthor")]
         public IActionResult AddAuthor([FromBody] Author author)
         {
@@ -76,6 +80,7 @@ namespace BookApi.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("UpdateAuthor")]
         public IActionResult UpdateAuthor([FromQuery] string id, [FromBody] Author author)
         {
@@ -97,6 +102,8 @@ namespace BookApi.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
+        [Authorize]
         [HttpDelete("DeleteAuthor")]
         public IActionResult DeleteAuthor([FromQuery] string id)
         {

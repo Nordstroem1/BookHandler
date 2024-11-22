@@ -7,12 +7,12 @@ namespace BookHandlerTest.BookTests.BookFixtures.QueryFixtures
     public class GetAllBooksFixture
     {
         public FakeDatabase FakeDatabase { get; }
-        public GetAllBooksCommandHandler GetBookByIdCommand { get; }
+        public GetAllBooksQuery GetBookByIdCommand { get; }
         public GetAllBooksFixture()
         {
             var fixture = new AutoFixture.Fixture();
             FakeDatabase = A.Fake<FakeDatabase>();
-            GetBookByIdCommand = new GetAllBooksCommandHandler(FakeDatabase);
+            GetBookByIdCommand = new GetAllBooksQuery(FakeDatabase);
         }
     }
 }

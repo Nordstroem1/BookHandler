@@ -5,7 +5,7 @@ using AutoMapper;
 
 namespace Application.Books.Queries.GetById
 {
-    public class GetBookByIdQueryHandler : IRequestHandler<GetBookByIdCommand, BookDto>
+    public class GetBookByIdQueryHandler : IRequestHandler<GetBookByIdQuery, BookDto>
     {
         public FakeDatabase _fakeDatabase { get; }
         public IMapper _mapper { get; }
@@ -14,7 +14,7 @@ namespace Application.Books.Queries.GetById
             _fakeDatabase = fakeDatabase;
             _mapper = mapper;
         }
-        public async Task<BookDto> Handle(GetBookByIdCommand request, CancellationToken cancellationToken)
+        public async Task<BookDto> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
         {
             if (request.BookId.Equals(Guid.Empty))
             {
