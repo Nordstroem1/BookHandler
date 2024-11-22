@@ -1,13 +1,18 @@
 ﻿using Domain.Models;
-using System.Diagnostics.Metrics;
 namespace Infrastructure.Databases
 {
     public class FakeDatabase
     {
         private List<Book> Books = new List<Book>();
         private List<Author> Authors = new List<Author>();
+        private List<User> Users = new List<User>();
         public FakeDatabase()
         {
+            Users = new List<User>
+            {
+                new User(Guid.NewGuid(), "admin", "admin1337"),
+                new User(Guid.NewGuid(), "user", "user1337"),
+            };
             var author1 = new Author(Guid.NewGuid(), "F. Scott Fitzgerald", new DateOnly(1896, 9, 24), "Saint Paul, Minnesota");
             var author2 = new Author(Guid.NewGuid(), "Harper Lee", new DateOnly(1926, 4, 28), "Monroeville, Alabama");
             var author3 = new Author(Guid.NewGuid(), "George Orwell", new DateOnly(1903, 6, 25), "Motihari, India");
@@ -121,6 +126,32 @@ namespace Infrastructure.Databases
             }
 
             return true;
+        }
+
+        public virtual List<User> GetAllUsers()
+        {
+            return Users;
+        }
+
+        public virtual User AddUser(User user)
+        {
+            Users.Add(user);
+            return user;
+        }
+
+        public User LoginUser(string userName, string password)
+        {
+            var user = Users.Where(name => name.UserName == userName)
+                              .Where(pass => pass.Password == password)
+                              .FirstOrDefault();
+            if (user != null)
+            {
+                return user;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

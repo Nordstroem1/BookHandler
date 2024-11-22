@@ -3,9 +3,9 @@ using MediatR;
 
 namespace Application.Books.Queries.GetAllBooks
 {
-    public class GetAllBooksCommand : IRequest<List<Book>>
+    public class GetAllBooksQueryHandler : IRequest<List<Book>>
     {
-        public GetAllBooksCommand()
+        public GetAllBooksQueryHandler()
         {
             Booklist = new List<Book>();
         }

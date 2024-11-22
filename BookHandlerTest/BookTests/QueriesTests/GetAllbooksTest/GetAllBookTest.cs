@@ -25,7 +25,7 @@ namespace BookHandlerTest.BookTests.QueriesTests.GetAllbooksTest
 
                 };
             A.CallTo(() => fixture.FakeDatabase.GetAllBooks()).Returns(books);
-            var query = new GetAllBooksCommand();
+            var query = new GetAllBooksQueryHandler();
             //act
             var result = fixture.GetBookByIdCommand.Handle(query, CancellationToken.None).Result;
 

@@ -7,6 +7,7 @@ using Application.Books.Commands.UpdateBook;
 using Application.Books.Commands.DeleteBook;
 using Application.Books.Queries.GetAllBooks;
 using Application.Books.Queries.GetById;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookApi.Controllers
 {
@@ -19,14 +20,14 @@ namespace BookApi.Controllers
         {
             _mediator = mediator;
         }
-
+        [Authorize]
         [HttpGet("GetAllBooks")]
         [OpenApiOperation("Retrieves all the books from the database.")]
         public IActionResult GetAllBooks()
         {
             try
             {
-                var bookList = _mediator.Send(new GetAllBooksCommand()).Result;
+                var bookList = _mediator.Send(new GetAllBooksQueryHandler()).Result;
                 return bookList.Count == 0 ? NotFound("No books in list") : Ok(bookList);
             }
             catch
@@ -34,14 +35,14 @@ namespace BookApi.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
-
+        [Authorize]
         [HttpGet("GetBookById")]
         [OpenApiOperation("Retrieves a book from the database.")]
         public IActionResult GetBook([FromQuery] string id)
         {
             try
             {
-                var bookDto = _mediator.Send(new GetBookByIdCommand(Guid.Parse(id))).Result;
+                var bookDto = _mediator.Send(new GetBookByIdQuery(Guid.Parse(id))).Result;
 
                 if (bookDto == null) { return NotFound("Book not found"); }
 
@@ -53,6 +54,7 @@ namespace BookApi.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost("CreateBook")]
         [OpenApiOperation("Adds a book to the database.")]
         public IActionResult AddBook([FromBody] Book book)
@@ -75,6 +77,8 @@ namespace BookApi.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
+        [Authorize]
         [HttpPut("UpdateBook")]
         [OpenApiOperation("Updates a book in the database.")]
         public IActionResult UpdateBook([FromQuery] string idOfChosenBook, [FromBody] Book book)
@@ -97,6 +101,8 @@ namespace BookApi.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
+        [Authorize]
         [HttpDelete("DeleteBook")]
         [OpenApiOperation("Deletes a book from the database.")]
         public IActionResult DeleteBook([FromQuery] string id)

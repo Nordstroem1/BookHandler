@@ -4,15 +4,15 @@ using Domain.Models;
 
 namespace Application.Books.Queries.GetAllBooks
 {
-    public class GetAllBooksCommandHandler : IRequestHandler<GetAllBooksCommand, List<Book>>
+    public class GetAllBooksQuery : IRequestHandler<GetAllBooksQueryHandler, List<Book>>
     {
         public FakeDatabase _fakeDatabase { get; }
-        public GetAllBooksCommandHandler(FakeDatabase fakeDatabase)
+        public GetAllBooksQuery(FakeDatabase fakeDatabase)
         {
             _fakeDatabase = fakeDatabase;
         }
 
-        public async Task<List<Book>> Handle(GetAllBooksCommand request, CancellationToken cancellationToken)
+        public async Task<List<Book>> Handle(GetAllBooksQueryHandler request, CancellationToken cancellationToken)
         {
             var bookList = await Task.Run(() => _fakeDatabase.GetAllBooks());
 

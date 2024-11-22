@@ -18,7 +18,7 @@ namespace BookHandlerTest.AuthorTests.QueriesTests
             var author = new Author(Guid.NewGuid(), "author1", new DateOnly(1942, 09, 25), "place1");
             var authorDto = new AuthorDto(author.Id, "author1");
             A.CallTo(() => fixture.fakeDatabase.GetAuthorById(author.Id)).Returns(author);
-            var query = new GetAuthorByIdCommand(author.Id);
+            var query = new GetAuthorByIdQuery(author.Id);
             
             // Act
             var result = await fixture.getAuthorByIdQueryHandler.Handle(query, CancellationToken.None);

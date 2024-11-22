@@ -4,17 +4,17 @@ using Infrastructure.Databases;
 using MediatR;
 namespace Application.Authors.Queries.GetAuthorById
 {
-    public class GetAuthorByIdCommandHandler : IRequestHandler<GetAuthorByIdCommand, AuthorDto>
+    public class GetAuthorByIdQueryHandler : IRequestHandler<GetAuthorByIdQuery, AuthorDto>
     {
         public IMapper _mapper { get; }
         public FakeDatabase _fakeDatabase { get; }
-        public GetAuthorByIdCommandHandler(FakeDatabase fakeDatabase, IMapper mapper)
+        public GetAuthorByIdQueryHandler(FakeDatabase fakeDatabase, IMapper mapper)
         {
             _fakeDatabase = fakeDatabase;
             _mapper = mapper;
         }
 
-        public async Task<AuthorDto> Handle(GetAuthorByIdCommand request, CancellationToken cancellationToken)
+        public async Task<AuthorDto> Handle(GetAuthorByIdQuery request, CancellationToken cancellationToken)
         {
             if (request.AuthorId.Equals(Guid.Empty))
             {

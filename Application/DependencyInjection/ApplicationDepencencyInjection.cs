@@ -1,6 +1,7 @@
 ﻿
 using Application.Books.Commands.CreateBook;
 using Application.MappingProfiles;
+using Application.Users.Queries;
 using AutoMapper;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,7 +14,7 @@ namespace Application.DependencyInjection
             var assembly = typeof(ApplicationDepencencyInjection).Assembly;
 
             services.AddMediatR(config => config.RegisterServicesFromAssemblies(assembly));
-
+            services.AddScoped<TokenHelper>();
             services.AddAutoMapper(config =>
             {
                 config.AddProfile<BookmappingProfile>();

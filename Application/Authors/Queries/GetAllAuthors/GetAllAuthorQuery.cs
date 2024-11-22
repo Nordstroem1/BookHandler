@@ -4,14 +4,14 @@ using MediatR;
 
 namespace Application.Authors.Queries.GetAllAuthors
 {
-    public class GetAllAuthorsCommandHandler : IRequestHandler<GetAllAuthorsCommand, List<Author>>
+    public class GetAllAuthorQuery : IRequestHandler<GetAllAuthorsQueryHandler, List<Author>>
     {
         public FakeDatabase FakeDatabase { get; set; }
-        public GetAllAuthorsCommandHandler(FakeDatabase fakeDatabase)
+        public GetAllAuthorQuery(FakeDatabase fakeDatabase)
         {
             FakeDatabase = fakeDatabase;
         }
-        public Task<List<Author>> Handle(GetAllAuthorsCommand request, CancellationToken cancellationToken)
+        public Task<List<Author>> Handle(GetAllAuthorsQueryHandler request, CancellationToken cancellationToken)
         {
             return FakeDatabase.GetAllAuthors();
         }

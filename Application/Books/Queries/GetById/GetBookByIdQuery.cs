@@ -3,9 +3,9 @@ using MediatR;
 
 namespace Application.Books.Queries.GetById
 {
-    public class GetBookByIdCommand : IRequest<BookDto>
+    public class GetBookByIdQuery : IRequest<BookDto>
     {
-        public GetBookByIdCommand(Guid bookId)
+        public GetBookByIdQuery(Guid bookId)
         {
             BookId = bookId;
         }

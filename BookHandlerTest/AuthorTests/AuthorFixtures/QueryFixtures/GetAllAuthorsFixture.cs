@@ -8,12 +8,12 @@ namespace BookHandlerTest.AuthorTests.AuthorFixtures.QueryFixtures
     public class GetAllAuthorsFixture
     {
         public FakeDatabase fakeDatabase { get; }
-        public GetAllAuthorsCommandHandler getAllAuthorsQueryHandler { get; }
+        public GetAllAuthorQuery getAllAuthorsQueryHandler { get; }
         public GetAllAuthorsFixture()
         {
             var fixture = new AutoFixture.Fixture();
             fakeDatabase = A.Fake<FakeDatabase>();
-            getAllAuthorsQueryHandler = new GetAllAuthorsCommandHandler(fakeDatabase);
+            getAllAuthorsQueryHandler = new GetAllAuthorQuery(fakeDatabase);
         }
     }
 }

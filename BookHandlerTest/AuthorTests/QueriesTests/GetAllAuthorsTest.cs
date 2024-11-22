@@ -13,7 +13,7 @@ namespace BookHandlerTest.AuthorTests.QueriesTests
         {
             // Arrange
             var fixture = new GetAllAuthorsFixture();
-            var query = new GetAllAuthorsCommand();
+            var query = new GetAllAuthorsQueryHandler();
             var authorList = new List<Author>
             {
                 new Author(Guid.NewGuid(), "author1", new DateOnly(1942, 09, 25), "place1"),

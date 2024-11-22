@@ -10,14 +10,14 @@ namespace BookHandlerTest.AuthorTests.AuthorFixtures.QueryFixtures
     public class GetAuthorByIdFixture
     {
         public FakeDatabase fakeDatabase { get; }
-        public GetAuthorByIdCommandHandler getAuthorByIdQueryHandler { get; }
+        public GetAuthorByIdQueryHandler getAuthorByIdQueryHandler { get; }
         public IMapper mapper { get; }
         public GetAuthorByIdFixture()
         {
             var fixture = new AutoFixture.Fixture();
             fakeDatabase = A.Fake<FakeDatabase>();
             mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new AuthormappingProfile())));
-            getAuthorByIdQueryHandler = new GetAuthorByIdCommandHandler(fakeDatabase, mapper);
+            getAuthorByIdQueryHandler = new GetAuthorByIdQueryHandler(fakeDatabase, mapper);
         }
     }
 }
