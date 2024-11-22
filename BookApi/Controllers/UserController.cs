@@ -5,7 +5,7 @@ using Application.Users.Queries.LoginUserQuery;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Runtime.InteropServices;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace BookApi.Controllers
 {
@@ -21,6 +21,7 @@ namespace BookApi.Controllers
 
         [Authorize]
         [HttpGet("GetUser")]
+        [SwaggerOperation("Retrieves all users from the database.")]
         public IActionResult GetAllUsers()
         {
             try
@@ -34,14 +35,15 @@ namespace BookApi.Controllers
                 return StatusCode(500, "Could not get all users from Database.");
             }
         }
-
         [HttpPost("Register")]
+        [SwaggerOperation("Registers a new user.")]
         public async Task<IActionResult> RegisterUser([FromBody]UserDto newUser)
         {
             return Ok(await _mediator.Send(new CreateUserCommand(newUser)));
         }
 
         [HttpPost("Login")]
+        [SwaggerOperation("Logs in a user and returns a token.")]
         public async Task<IActionResult> LoginUser([FromBody] UserDto user)
         {
             var response = await _mediator.Send(new LoginUserQuery(user));

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NSwag.Annotations;
+using Swashbuckle.AspNetCore.Annotations;
 using Domain.Models;
 using MediatR;
 using Application.Books.Commands.CreateBook;
@@ -22,7 +22,7 @@ namespace BookApi.Controllers
         }
         [Authorize]
         [HttpGet("GetAllBooks")]
-        [OpenApiOperation("Retrieves all the books from the database.")]
+        [SwaggerOperation("Retrieves all the books from the database.")]
         public IActionResult GetAllBooks()
         {
             try
@@ -37,7 +37,7 @@ namespace BookApi.Controllers
         }
         [Authorize]
         [HttpGet("GetBookById")]
-        [OpenApiOperation("Retrieves a book from the database.")]
+        [SwaggerOperation("Retrieves a book from the database by id.")]
         public IActionResult GetBook([FromQuery] string id)
         {
             try
@@ -56,7 +56,7 @@ namespace BookApi.Controllers
 
         [Authorize]
         [HttpPost("CreateBook")]
-        [OpenApiOperation("Adds a book to the database.")]
+        [SwaggerOperation("Adds a book to the database.")]
         public IActionResult AddBook([FromBody] Book book)
         {
             try
@@ -80,7 +80,7 @@ namespace BookApi.Controllers
 
         [Authorize]
         [HttpPut("UpdateBook")]
-        [OpenApiOperation("Updates a book in the database.")]
+        [SwaggerOperation("Updates a book in the database.")]
         public IActionResult UpdateBook([FromQuery] string idOfChosenBook, [FromBody] Book book)
         {
             try
@@ -104,7 +104,7 @@ namespace BookApi.Controllers
 
         [Authorize]
         [HttpDelete("DeleteBook")]
-        [OpenApiOperation("Deletes a book from the database.")]
+        [SwaggerOperation("Deletes a book from the database.")]
         public IActionResult DeleteBook([FromQuery] string id)
         {
             try

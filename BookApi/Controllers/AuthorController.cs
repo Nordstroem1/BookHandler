@@ -6,7 +6,7 @@ using Application.Authors.Commands.UpdateAuthor;
 using Application.Authors.Commands.DeleteAuthor;
 using Application.Authors.Queries.GetAllAuthors;
 using Application.Authors.Queries.GetAuthorById;
-using AutoMapper;
+using Swashbuckle.AspNetCore.Annotations;
 using Microsoft.AspNetCore.Authorization;
 namespace BookApi.Controllers
 {
@@ -23,6 +23,7 @@ namespace BookApi.Controllers
 
         [Authorize]
         [HttpGet("GetAuhtor")]
+        [SwaggerOperation("Retrieves an author from the database by id.")]
         public IActionResult GetAuthorById([FromQuery] string id)
         {
             try
@@ -44,6 +45,7 @@ namespace BookApi.Controllers
 
         [Authorize]
         [HttpGet("GetAllAuthors")]
+        [SwaggerOperation("Retrieves all the authors from the database.")]
         public IActionResult GetAllAuthors()
         {
             try
@@ -60,6 +62,7 @@ namespace BookApi.Controllers
 
         [Authorize]
         [HttpPost("CreateAuthor")]
+        [SwaggerOperation("Adds an author to the database.")]
         public IActionResult AddAuthor([FromBody] Author author)
         {
             try
@@ -82,6 +85,7 @@ namespace BookApi.Controllers
 
         [Authorize]
         [HttpPut("UpdateAuthor")]
+        [SwaggerOperation("Updates an author in the database.")]
         public IActionResult UpdateAuthor([FromQuery] string id, [FromBody] Author author)
         {
             try
@@ -105,6 +109,7 @@ namespace BookApi.Controllers
 
         [Authorize]
         [HttpDelete("DeleteAuthor")]
+        [SwaggerOperation("Deletes an author from the database with UserId")]
         public IActionResult DeleteAuthor([FromQuery] string id)
         {
             try
