@@ -3,7 +3,7 @@ using Infrastructure.Databases;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace Infrastructure.Persistence.Repositories
+namespace Infrastructure.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
@@ -16,7 +16,7 @@ namespace Infrastructure.Persistence.Repositories
         }
         public async Task<T> GetByIdAsync(int id)
         {
-            return await _dbSet.FindAsync(id);
+            return await _database.FindAsync<T>(id);
         }
         public async Task<IEnumerable<T>> GetAllAsync()
         {
@@ -33,16 +33,19 @@ namespace Infrastructure.Persistence.Repositories
             await _database.SaveChangesAsync();
             return entity;
         }
-        public Task UpdateAsync(T entity)
+
+        public async Task<T> UpdateAsync(T entity)
         {
             _dbSet.Update(entity);
-            return _database.SaveChangesAsync();
+            await _database.SaveChangesAsync();
+            return entity;
         }
 
-        public Task DeleteAsync(T entity)
+        public async Task<T> DeleteAsync(T entity)
         {
             _dbSet.Remove(entity);
-            return _database.SaveChangesAsync();
+            await _database.SaveChangesAsync();
+            return entity;
         }
     }
 }

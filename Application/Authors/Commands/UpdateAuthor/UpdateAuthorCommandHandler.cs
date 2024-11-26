@@ -1,4 +1,6 @@
 ﻿
+using Domain.Interfaces;
+using Domain.Models;
 using Infrastructure.Databases;
 using MediatR;
 
@@ -6,18 +8,18 @@ namespace Application.Authors.Commands.UpdateAuthor
 {
     public class UpdateAuthorCommandHandler : IRequestHandler<UpdateAuthorCommand, bool>
     {
-        public FakeDatabase fakeDatabase { get; }
-        public UpdateAuthorCommandHandler(FakeDatabase fakeDatabase)
+        private readonly IGenericRepository<Author> _genericRepository;
+        public UpdateAuthorCommandHandler(IGenericRepository<Author> genericRepository)
         {
-            this.fakeDatabase = fakeDatabase;
+            _genericRepository = genericRepository;
         }
         public async Task<bool> Handle(UpdateAuthorCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                bool authorUpdated = await fakeDatabase.UpdateAuthor(request.Author);
-
-                if (authorUpdated)
+                var authorUpdated = await _genericRepository.UpdateAsync(request.Author);
+                
+                if (authorUpdated != request.Author)
                 {
                     return true;
                 }

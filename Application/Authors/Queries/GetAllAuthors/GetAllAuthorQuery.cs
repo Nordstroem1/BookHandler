@@ -1,19 +1,27 @@
-﻿using Domain.Models;
-using Infrastructure.Databases;
+﻿using Domain.Interfaces;
+using Domain.Models;
 using MediatR;
 
 namespace Application.Authors.Queries.GetAllAuthors
 {
-    public class GetAllAuthorQuery : IRequestHandler<GetAllAuthorsQueryHandler, List<Author>>
+    public class GetAllAuthorQuery : IRequestHandler<GetAllAuthorsQueryHandler, IEnumerable<Author>>
     {
-        public FakeDatabase FakeDatabase { get; set; }
-        public GetAllAuthorQuery(FakeDatabase fakeDatabase)
+        private readonly IGenericRepository<Author> _genericRepository;
+        public GetAllAuthorQuery(IGenericRepository<Author> genericRepository)
         {
-            FakeDatabase = fakeDatabase;
+            _genericRepository = genericRepository;
         }
-        public Task<List<Author>> Handle(GetAllAuthorsQueryHandler request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Author>> Handle(GetAllAuthorsQueryHandler request, CancellationToken cancellationToken)
         {
-            return FakeDatabase.GetAllAuthors();
+            try
+            {
+                var authors = await _genericRepository.GetAllAsync();
+                return authors;
+            }
+            catch
+            {
+                throw new Exception("Something went wrong while getting the authors.");
+            }
         }
     }
 }
