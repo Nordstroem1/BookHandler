@@ -8,7 +8,6 @@ namespace Domain.Interfaces
         Task<IEnumerable<T>> GetAllAsync();
         Task<IEnumerable<T>> Find(Expression<Func<T, bool>> predicate);
         Task<T> AddAsync(T entity);
-        Task UpdateAsync(T entity);
-        Task DeleteAsync(T entity);
-    }
-}
+        Task<T> UpdateAsync(T entity);
+        Task<T> DeleteAsync(T entity);
+    }}
