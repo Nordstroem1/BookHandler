@@ -4,14 +4,15 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Runtime.CompilerServices;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddApplicationLayer();
-builder.Services.AddInfrastructureLayer();
+builder.Services.AddInfrastructureLayer(builder.Configuration.GetConnectionString("DefaultConnection")!);
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.EnableAnnotations();
@@ -39,7 +40,6 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-
 var jwt = builder.Configuration.GetSection("JwtSettings");
 byte[] Secretkey = Encoding.ASCII.GetBytes(jwt["SecretKey"]!);
 
