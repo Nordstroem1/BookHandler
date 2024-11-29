@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 
 namespace Infrastructure.Repositories
 {
+    // GenericRepository class that implements IGenericRepository interface
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly MySqlDatabase _database;
