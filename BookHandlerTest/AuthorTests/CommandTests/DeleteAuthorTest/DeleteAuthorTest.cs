@@ -16,12 +16,14 @@ namespace BookHandlerTest.AuthorTests.CommandTests.DeleteAuthorTest
             // Arrange
             var deleteAuthorFixture = new DeleteAuthorFixture();
             var author = new Author(Guid.NewGuid(), "author1", new DateOnly(2000, 03, 27), "Sundsvall");
-            A.CallTo(() => deleteAuthorFixture.fakeDatabase.DeleteAuthor(author.Id)).Returns(true);
             var deleteAuthorCommand = new DeleteAuthorCommand(author.Id);
+            
+            A.CallTo(() => deleteAuthorFixture._genericRepository.GetByIdAsync(author.Id)).Returns(author);
+            A.CallTo(() => deleteAuthorFixture._genericRepository.DeleteAsync(author)).Returns(author);
 
             // Act
             var result = await deleteAuthorFixture.deleteAuthorCommandHandler.Handle(deleteAuthorCommand, CancellationToken.None);
-            
+
             // Assert
             result.Should().BeTrue();
         }

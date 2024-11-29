@@ -1,17 +1,19 @@
 ﻿using Application.Books.Commands.CreateBook;
+using Domain.Interfaces;
+using Domain.Models;
 using FakeItEasy;
 using Infrastructure.Databases;
 namespace BookHandlerTest.BookTests.BookFixtures.CommandFixtures
 {
     public class CreateBookFixture
     {
-        public FakeDatabase FakeDatabase { get; }
+        public IGenericRepository<Book> genericRepository { get; }
         public CreateBookCommandHandler CreateBookCommandHandler { get; }
         public CreateBookFixture()
         {
             var fixture = new AutoFixture.Fixture();
-            FakeDatabase = A.Fake<FakeDatabase>();
-            CreateBookCommandHandler = new CreateBookCommandHandler(FakeDatabase);
+            genericRepository = A.Fake<IGenericRepository<Book>>();
+            CreateBookCommandHandler = new CreateBookCommandHandler(genericRepository);
         }
     }
 }

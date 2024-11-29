@@ -17,16 +17,20 @@ namespace Application.Authors.Commands.UpdateAuthor
         {
             try
             {
-                var authorUpdated = await _genericRepository.UpdateAsync(request.Author);
-                
-                if (authorUpdated != request.Author)
-                {
-                    return true;
-                }
-                else
+                var foundAuthor = await _genericRepository.GetByIdAsync(request.Author.Id);
+
+                if (foundAuthor == null)
                 {
                     return false;
                 }
+
+                foundAuthor.Name = request.Author.Name;
+                foundAuthor.DateOfBirth = request.Author.DateOfBirth;
+                foundAuthor.PlaceOfBirth = request.Author.PlaceOfBirth; 
+
+                var authorUpdated = await _genericRepository.UpdateAsync(foundAuthor);
+
+                return true; 
             }
             catch
             {

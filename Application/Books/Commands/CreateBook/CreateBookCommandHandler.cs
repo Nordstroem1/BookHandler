@@ -1,30 +1,32 @@
-﻿using Domain.Models;
+﻿using Domain.Interfaces;
+using Domain.Models;
 using Infrastructure.Databases;
+using Infrastructure.Repositories;
 using MediatR;
 
 namespace Application.Books.Commands.CreateBook
 {
     public class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, bool>
     {
-        private readonly FakeDatabase _database;
-        public CreateBookCommandHandler(FakeDatabase database)
+        private IGenericRepository<Book> _genericRepository;
+        public CreateBookCommandHandler(IGenericRepository<Book> genericRepository)
         {
-            _database = database;
+            _genericRepository = genericRepository;
         }
         public async Task<bool> Handle(CreateBookCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                var existingBook = await _database.GetBookById(request.BookToAdd.Id);
+                var existingBook = await _genericRepository.GetByIdAsync(request.BookToAdd.Id);
 
                 if (existingBook.Title != string.Empty || existingBook.Id != Guid.Empty)
                 {
                     return await Task.FromResult(false);
                 }
 
-                bool bookAdded = await _database.CreateBook(request.BookToAdd);
+                Book addedBook = await _genericRepository.AddAsync(request.BookToAdd);
 
-                if (bookAdded)
+                if (addedBook != null)
                 {
                     return await Task.FromResult(true);
                 }

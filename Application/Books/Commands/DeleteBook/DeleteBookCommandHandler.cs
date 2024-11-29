@@ -1,36 +1,31 @@
-﻿using Infrastructure.Databases;
+﻿using Domain.Interfaces;
+using Domain.Models;
+using Infrastructure.Databases;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Books.Commands.DeleteBook
 {
     public class DeleteBookCommandHandler : IRequestHandler<DeleteBookCommand, bool>
     {
-        private readonly FakeDatabase _database;
-        public DeleteBookCommandHandler(FakeDatabase database)
+        private IGenericRepository<Book> _genericRepository;
+        public DeleteBookCommandHandler(IGenericRepository<Book> genericRepository)
         {
-            _database = database;
+            _genericRepository = genericRepository;
         }
         public async Task<bool> Handle(DeleteBookCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                var existingBook = await _database.GetBookById(Guid.Parse(request.BookId));
-                if (existingBook.Id == Guid.Empty || existingBook.Title == string.Empty)
+                var existingBook = await _genericRepository.GetByIdAsync(Guid.Parse(request.BookId));
+
+                if (existingBook == null)
                 {
-                    bool bookDeleted = await _database.DeleteBook(Guid.Parse(request.BookId));
-
-                    if (bookDeleted)
-                    {
-                        return await Task.FromResult(true);
-                    }
+                    return false;
                 }
+                
+                var bookDeleted = await _genericRepository.DeleteAsync(existingBook);
 
-                return await Task.FromResult(false);
+                return true;
             }
             catch
             {

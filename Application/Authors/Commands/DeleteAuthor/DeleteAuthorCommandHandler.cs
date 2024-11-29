@@ -16,16 +16,16 @@ namespace Application.Authors.Commands.DeleteAuthor
         {
             try
             {
-                var foundAuthor = await _genericRepository.GetByIdAsync(Convert.ToInt32(request.AuthorId));
-                var result = false;
+                var foundAuthor = await _genericRepository.GetByIdAsync(request.AuthorId);
 
-                if (foundAuthor != null)
+                if (foundAuthor == null)
                 {
-                    result = true;
-                    await _genericRepository.DeleteAsync(foundAuthor);
+                    return false;
                 }
 
-                return result;
+                var deletedAuthor = await _genericRepository.DeleteAsync(foundAuthor);
+
+                return true;
             }
             catch
             {

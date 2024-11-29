@@ -1,21 +1,24 @@
 ﻿using Application.Authors.Commands.CreateAuthor;
+using Application.Dtos;
 using AutoMapper;
+using Domain.Interfaces;
+using Domain.Models;
 using FakeItEasy;
 using Infrastructure.Databases;
 
-namespace BookHandlerTest.Fixtures.Author.CommandFixtures
+namespace BookHandlerTest.AuthorFixtures.CommandFixtures
 {
     public class CreateAuthorFixture
     {
-        public FakeDatabase fakeDatabase { get; }
+        public IGenericRepository<Author> _genericRepository { get; }
         public IMapper mapper { get; }
         public CreateAuthorCommandHandler createAuthorCommandHandler { get; }
         public CreateAuthorFixture()
         {
             var fixture = new AutoFixture.Fixture();
-            fakeDatabase = A.Fake<FakeDatabase>();
+            _genericRepository = A.Fake<IGenericRepository<Author>>();
             mapper = A.Fake<IMapper>();
-            createAuthorCommandHandler = new CreateAuthorCommandHandler(fakeDatabase);
+            createAuthorCommandHandler = new CreateAuthorCommandHandler(_genericRepository);
         }
     }
 }

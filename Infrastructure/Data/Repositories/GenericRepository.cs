@@ -14,7 +14,7 @@ namespace Infrastructure.Repositories
             _database = database;
             _dbSet = _database.Set<T>();
         }
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<T> GetByIdAsync(Guid id)
         {
             return await _database.FindAsync<T>(id);
         }
