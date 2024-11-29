@@ -1,4 +1,5 @@
 ﻿
+using Domain.Models;
 using MediatR;
 
 namespace Application.Books.Commands.DeleteBook

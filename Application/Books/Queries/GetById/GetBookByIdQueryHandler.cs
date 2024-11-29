@@ -2,16 +2,17 @@
 using Infrastructure.Databases;
 using MediatR;
 using AutoMapper;
+using Domain.Interfaces;
 
 namespace Application.Books.Queries.GetById
 {
     public class GetBookByIdQueryHandler : IRequestHandler<GetBookByIdQuery, BookDto>
     {
-        public FakeDatabase _fakeDatabase { get; }
+        private IGenericRepository<BookDto> _genericRepository { get; }
         public IMapper _mapper { get; }
-        public GetBookByIdQueryHandler(FakeDatabase fakeDatabase, IMapper mapper)
+        public GetBookByIdQueryHandler(IGenericRepository<BookDto> genericRepository, IMapper mapper)
         {
-            _fakeDatabase = fakeDatabase;
+            _genericRepository = genericRepository;
             _mapper = mapper;
         }
         public async Task<BookDto> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
@@ -20,7 +21,7 @@ namespace Application.Books.Queries.GetById
             {
                 return null;
             }
-            var book = _fakeDatabase.GetBookById(request.BookId).Result;
+            var book = _genericRepository.GetByIdAsync(request.BookId).Result;
 
             return _mapper.Map<BookDto>(book);
         }

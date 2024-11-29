@@ -1,21 +1,23 @@
 ﻿using Infrastructure.Databases;
 using MediatR;
 using Domain.Models;
+using System.Runtime.InteropServices;
+using Domain.Interfaces;
 
 namespace Application.Books.Queries.GetAllBooks
 {
-    public class GetAllBooksQuery : IRequestHandler<GetAllBooksQueryHandler, List<Book>>
+    public class GetAllBooksQuery : IRequestHandler<GetAllBooksQueryHandler, IEnumerable<Book>>
     {
-        public FakeDatabase _fakeDatabase { get; }
-        public GetAllBooksQuery(FakeDatabase fakeDatabase)
+        private IGenericRepository<Book> _genericRepository { get; }
+        public GetAllBooksQuery(IGenericRepository<Book> genericRepository)
         {
-            _fakeDatabase = fakeDatabase;
+            _genericRepository = genericRepository;
         }
 
-        public async Task<List<Book>> Handle(GetAllBooksQueryHandler request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Book>> Handle(GetAllBooksQueryHandler request, CancellationToken cancellationToken)
         {
-            var bookList = await Task.Run(() => _fakeDatabase.GetAllBooks());
-
+            var bookList = await _genericRepository.GetAllAsync();
+            
             return bookList;
         }
     }

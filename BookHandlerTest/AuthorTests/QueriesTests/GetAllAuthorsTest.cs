@@ -20,7 +20,7 @@ namespace BookHandlerTest.AuthorTests.QueriesTests
                 new Author(Guid.NewGuid(), "author2", new DateOnly(1962, 01, 2), "place2"),
                 new Author(Guid.NewGuid(), "author3", new DateOnly(1982, 12, 31), "place3")
             };
-            A.CallTo(() => fixture.fakeDatabase.GetAllAuthors()).Returns(authorList);
+            A.CallTo(() => fixture._genericRepository.GetAllAsync()).Returns(authorList);
             // Act
             var result = await fixture.getAllAuthorsQueryHandler.Handle(query, CancellationToken.None);
             // Assert

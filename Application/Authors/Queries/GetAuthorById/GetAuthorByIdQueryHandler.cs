@@ -1,16 +1,19 @@
 ﻿using Application.Dtos;
 using AutoMapper;
+using Domain.Interfaces;
+using Domain.Models;
 using Infrastructure.Databases;
+using Infrastructure.Repositories;
 using MediatR;
 namespace Application.Authors.Queries.GetAuthorById
 {
     public class GetAuthorByIdQueryHandler : IRequestHandler<GetAuthorByIdQuery, AuthorDto>
     {
-        public IMapper _mapper { get; }
-        public FakeDatabase _fakeDatabase { get; }
-        public GetAuthorByIdQueryHandler(FakeDatabase fakeDatabase, IMapper mapper)
+        private IMapper _mapper { get; }
+        private IGenericRepository<Author> _genericRepository { get; }
+        public GetAuthorByIdQueryHandler(IGenericRepository<Author> genericRepository, IMapper mapper)
         {
-            _fakeDatabase = fakeDatabase;
+            _genericRepository = genericRepository;
             _mapper = mapper;
         }
 
@@ -20,7 +23,7 @@ namespace Application.Authors.Queries.GetAuthorById
             {
                 return null;
             }
-            var author = _fakeDatabase.GetAuthorById(request.AuthorId).Result;
+            var author = await _genericRepository.GetByIdAsync(request.AuthorId);
 
             return _mapper.Map<AuthorDto>(author);
         }

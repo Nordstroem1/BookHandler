@@ -1,25 +1,35 @@
-﻿using Infrastructure.Databases;
+﻿using Domain.Interfaces;
+using Domain.Models;
+using Infrastructure.Databases;
 using MediatR;
 
 namespace Application.Books.Commands.UpdateBook
 {
     public class UpdateBookCommandHandler : IRequestHandler<UpdateBookCommand, bool>
     {
-        private readonly FakeDatabase _database;
-        public UpdateBookCommandHandler(FakeDatabase database)
+        private IGenericRepository<Book> _genericRepository;
+        public UpdateBookCommandHandler(IGenericRepository<Book> genericRepository)
         {
-            _database = database;
+            _genericRepository = genericRepository;
         }
         public async Task<bool> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                bool bookUpdated = await _database.UpdateBook(request.Book.Id, request.Book);
-                if (!bookUpdated)
+                var foundBook = await _genericRepository.GetByIdAsync(request.Book.Id);
+
+                if (foundBook == null)
                 {
-                    return await Task.FromResult(false);
+                    return false;
                 }
-                return await Task.FromResult(true);
+
+                foundBook.Title = request.Book.Title;
+                foundBook.AuthorId = request.Book.AuthorId;
+                foundBook.Pages = request.Book.Pages;
+
+                await _genericRepository.UpdateAsync(foundBook);
+
+                return true;
             }
             catch
             {
