@@ -2,7 +2,6 @@
 using Domain.Models;
 using FakeItEasy;
 using FluentAssertions;
-using Infrastructure.Databases;
 using BookHandlerTest.BookTests.BookFixtures.CommandFixtures;
 
 namespace BookHandlerTest.BookTests.CommandTests.UpdateBookTest
