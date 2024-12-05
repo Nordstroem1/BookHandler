@@ -6,14 +6,14 @@ using MediatR;
 
 namespace Application.Authors.Commands.UpdateAuthor
 {
-    public class UpdateAuthorCommandHandler : IRequestHandler<UpdateAuthorCommand, bool>
+    public class UpdateAuthorCommandHandler : IRequestHandler<UpdateAuthorCommand, OperationResult<bool>>
     {
         private readonly IGenericRepository<Author> _genericRepository;
         public UpdateAuthorCommandHandler(IGenericRepository<Author> genericRepository)
         {
             _genericRepository = genericRepository;
         }
-        public async Task<bool> Handle(UpdateAuthorCommand request, CancellationToken cancellationToken)
+        public async Task<OperationResult<bool>> Handle(UpdateAuthorCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -21,7 +21,7 @@ namespace Application.Authors.Commands.UpdateAuthor
 
                 if (foundAuthor == null)
                 {
-                    return false;
+                    return OperationResult<bool>.Fail("Author Id is invalid");
                 }
 
                 foundAuthor.Name = request.Author.Name;
@@ -30,11 +30,11 @@ namespace Application.Authors.Commands.UpdateAuthor
 
                 var authorUpdated = await _genericRepository.UpdateAsync(foundAuthor);
 
-                return true; 
+                return OperationResult<bool>.Success(true);
             }
             catch
             {
-                throw new Exception("Something went wrong while updating the author.");
+                return OperationResult<bool>.Fail("something went wrong in the commandhandler");
             }
         }
     }

@@ -23,7 +23,7 @@ namespace BookHandlerTest.AuthorTests.CommandTests.UpdateAuthorTest
             // Act
             var result = await fixture.updateAuthorCommandHandler.Handle(command, CancellationToken.None);
             // Assert
-            result.Should().BeTrue();
+            Assert.Equal(true, result.IsSuccess);
         }
     }
 }

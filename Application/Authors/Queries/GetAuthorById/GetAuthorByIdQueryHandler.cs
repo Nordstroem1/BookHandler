@@ -2,30 +2,29 @@
 using AutoMapper;
 using Domain.Interfaces;
 using Domain.Models;
-using Infrastructure.Databases;
-using Infrastructure.Repositories;
 using MediatR;
 namespace Application.Authors.Queries.GetAuthorById
 {
-    public class GetAuthorByIdQueryHandler : IRequestHandler<GetAuthorByIdQuery, AuthorDto>
+    public class GetAuthorByIdQueryHandler : IRequestHandler<GetAuthorByIdQuery, OperationResult<AuthorDto>>
     {
         private IMapper _mapper { get; }
-        private IGenericRepository<Author> _genericRepository { get; }
-        public GetAuthorByIdQueryHandler(IGenericRepository<Author> genericRepository, IMapper mapper)
+        private IGenericRepository<AuthorDto> _genericRepository { get; }
+        public GetAuthorByIdQueryHandler(IGenericRepository<AuthorDto> genericRepository, IMapper mapper)
         {
             _genericRepository = genericRepository;
             _mapper = mapper;
         }
 
-        public async Task<AuthorDto> Handle(GetAuthorByIdQuery request, CancellationToken cancellationToken)
+        public async Task<OperationResult<AuthorDto>> Handle(GetAuthorByIdQuery request, CancellationToken cancellationToken)
         {
             if (request.AuthorId.Equals(Guid.Empty))
             {
                 return null;
             }
             var author = await _genericRepository.GetByIdAsync(request.AuthorId);
-
-            return _mapper.Map<AuthorDto>(author);
+            var authorDto = _mapper.Map<AuthorDto>(author);
+            
+            return OperationResult<AuthorDto>.Success(authorDto);
         }
     }
 }

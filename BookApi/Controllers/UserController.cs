@@ -2,6 +2,7 @@
 using Application.Users.Commands.RegisterUserCommand;
 using Application.Users.Queries.GetAllUsersQuery;
 using Application.Users.Queries.LoginUserQuery;
+using Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -24,30 +25,65 @@ namespace BookApi.Controllers
         [SwaggerOperation("Retrieves all users from the database.")]
         public IActionResult GetAllUsers()
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest("Invalid data");
+            }
+
             try
             {
-                var listOfUsers = _mediator.Send(new GetAllUsersQuery()).Result;
+                var result = _mediator.Send(new GetAllUsersQuery()).Result;
 
-                return listOfUsers.Count == 0 ? NotFound("No users in list") : Ok(listOfUsers);
+                if (!result.IsSuccess)
+                {
+                    return BadRequest(result.ErrorMessage);
+                }
+
+                return Ok(OperationResult<List<User>>.Success(result.Data));
             }
-            catch
+            catch (Exception ex)
             {
-                return StatusCode(500, "Could not get all users from Database.");
+                return BadRequest(ex.Message);
             }
+
         }
+
         [HttpPost("Register")]
         [SwaggerOperation("Registers a new user.")]
         public async Task<IActionResult> RegisterUser([FromBody]UserDto newUser)
         {
-            return Ok(await _mediator.Send(new CreateUserCommand(newUser)));
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid data");
+            }
+            var result = await _mediator.Send(new CreateUserCommand(newUser));
+
+            return Ok(OperationResult<User>.Success(result.Data));
         }
 
         [HttpPost("Login")]
         [SwaggerOperation("Logs in a user and returns a token.")]
         public async Task<IActionResult> LoginUser([FromBody] UserDto user)
         {
-            var response = await _mediator.Send(new LoginUserQuery(user));
-            return response == null ? NotFound("User not found") : Ok(response);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid data");
+            }
+            try
+            {
+                var response = await _mediator.Send(new LoginUserQuery(user));
+
+                if (!response.IsSuccess)
+                {
+                    return BadRequest(response.ErrorMessage);
+                }
+
+                return Ok(OperationResult<string>.Success(response.Data));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

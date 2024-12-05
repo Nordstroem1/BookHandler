@@ -2,7 +2,7 @@
 using MediatR;
 namespace Application.Authors.Commands.UpdateAuthor
 {
-    public class UpdateAuthorCommand : IRequest<bool>
+    public class UpdateAuthorCommand : IRequest<OperationResult<bool>>
     {
         public UpdateAuthorCommand(Author authorToUpdate) 
         {

@@ -13,7 +13,7 @@ namespace BookHandlerTest.AuthorTests.QueriesTests
         {
             // Arrange
             var fixture = new GetAllAuthorsFixture();
-            var query = new GetAllAuthorsQueryHandler();
+            var query = new GetAllAuthorsQuery();
             var authorList = new List<Author>
             {
                 new Author(Guid.NewGuid(), "author1", new DateOnly(1942, 09, 25), "place1"),
@@ -24,7 +24,7 @@ namespace BookHandlerTest.AuthorTests.QueriesTests
             // Act
             var result = await fixture.getAllAuthorsQueryHandler.Handle(query, CancellationToken.None);
             // Assert
-            result.Should().BeOfType<List<Author>>();
+            result.Data.Should().BeOfType<List<Author>>();
         }
 
     }

@@ -25,12 +25,12 @@ namespace BookHandlerTest.BookTests.QueriesTests.GetAllbooksTest
 
                 };
             A.CallTo(() => fixture.genericRepository.GetAllAsync()).Returns(books);
-            var query = new GetAllBooksQueryHandler();
+            var query = new GetAllBooksQuery();
             //act
             var result = fixture.GetBookByIdCommand.Handle(query, CancellationToken.None).Result;
 
             //assert
-            result.Should().BeEquivalentTo(books).And.BeOfType<List<Book>>();
+            result.Data.Should().BeEquivalentTo(books).And.BeOfType<List<Book>>();
 
         }
     }

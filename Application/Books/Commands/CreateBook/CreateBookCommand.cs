@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Application.Books.Commands.CreateBook
 {
-    public class CreateBookCommand : IRequest<bool>
+    public class CreateBookCommand : IRequest<OperationResult<bool>>
     {
         public CreateBookCommand(Book bookToAdd)
         {

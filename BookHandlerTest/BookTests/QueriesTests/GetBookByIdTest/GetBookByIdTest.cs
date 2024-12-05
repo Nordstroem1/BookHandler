@@ -25,7 +25,7 @@ namespace BookHandlerTest.BookTests.QueriesTests.GetBookByIdTest
             var result = await fixture.GetBookByIdCommand.Handle(query, CancellationToken.None);
 
             // Assert
-            result.Should().BeOfType<BookDto>().And.BeEquivalentTo(bookDto);
+            result.Data.Should().BeOfType<BookDto>().And.BeEquivalentTo(bookDto);
         }
     }
 }

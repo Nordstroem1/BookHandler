@@ -3,10 +3,12 @@ using Infrastructure.Databases;
 using MediatR;
 using AutoMapper;
 using Domain.Interfaces;
+using Domain.Models;
+using Microsoft.Identity.Client;
 
 namespace Application.Books.Queries.GetById
 {
-    public class GetBookByIdQueryHandler : IRequestHandler<GetBookByIdQuery, BookDto>
+    public class GetBookByIdQueryHandler : IRequestHandler<GetBookByIdQuery, OperationResult<BookDto>>
     {
         private IGenericRepository<BookDto> _genericRepository { get; }
         public IMapper _mapper { get; }
@@ -15,15 +17,16 @@ namespace Application.Books.Queries.GetById
             _genericRepository = genericRepository;
             _mapper = mapper;
         }
-        public async Task<BookDto> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
+        public async Task<OperationResult<BookDto>> Handle(GetBookByIdQuery request, CancellationToken cancellationToken)
         {
-            if (request.BookId.Equals(Guid.Empty))
+            if (request == null)
             {
-                return null;
+                return OperationResult<BookDto>.Fail("Failed to get book.");
             }
             var book = _genericRepository.GetByIdAsync(request.BookId).Result;
+            var mappedBook = _mapper.Map<BookDto>(book);
 
-            return _mapper.Map<BookDto>(book);
+            return OperationResult<BookDto>.Success(mappedBook);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace BookHandlerTest.BookTests.CommandTests.DeleteBookTest
             var result = fixture.deleteBookCommandHandler.Handle(command, CancellationToken.None);
 
             // Assert
-            Assert.True(result.Result);
+            Assert.True(result.IsCompletedSuccessfully);
         }
     }
 }

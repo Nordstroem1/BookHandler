@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Infrastructure.Databases;
 using Microsoft.EntityFrameworkCore;
-using Domain.Interfaces;
 using Infrastructure.Repositories;
 namespace Infrastructure.DependencyInjection
 {
@@ -13,9 +12,6 @@ namespace Infrastructure.DependencyInjection
             {
                 options.UseSqlServer(ConnectionString);
             });
-
-            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            services.AddSingleton<FakeDatabase>();
 
             return services;
         }

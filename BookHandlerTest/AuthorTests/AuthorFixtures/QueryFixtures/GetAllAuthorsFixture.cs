@@ -10,7 +10,7 @@ namespace BookHandlerTest.AuthorTests.AuthorFixtures.QueryFixtures
     public class GetAllAuthorsFixture
     {
         public IGenericRepository<Author> _genericRepository{ get; }
-        public GetAllAuthorQuery getAllAuthorsQueryHandler { get; }
+        public GetAllAuthorQueryHandler getAllAuthorsQueryHandler { get; }
         public GetAllAuthorsFixture()
         {
             var fixture = new AutoFixture.Fixture();

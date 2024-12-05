@@ -18,7 +18,7 @@ namespace BookApi.Controllers
 
         public AuthorController(IMediator mediator)
         {
-            _mediator = mediator;   
+            _mediator = mediator;
         }
 
         [Authorize]
@@ -26,37 +26,45 @@ namespace BookApi.Controllers
         [SwaggerOperation("Retrieves an author from the database by id.")]
         public IActionResult GetAuthorById([FromQuery] string id)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                var authorDto = _mediator.Send(new GetAuthorByIdQuery(Guid.Parse(id))).Result;
-
-                if (authorDto == null) 
-                { 
-                    return NotFound("Author not found"); 
-                }
-
-                return Ok(authorDto);
+                return BadRequest(ModelState);
             }
-            catch
+
+            var result = _mediator.Send(new GetAuthorByIdQuery(Guid.Parse(id))).Result;
+
+            if (!result.IsSuccess)
             {
-                return StatusCode(500, "Internal server error");
+                return BadRequest(new { result.Data, result.IsSuccess, result.ErrorMessage });
             }
+
+            return Ok(new { result.Data, result.IsSuccess, result.ErrorMessage });
         }
 
         [Authorize]
         [HttpGet("GetAllAuthors")]
-        [SwaggerOperation("Retrieves all the authors from the database.")]
+        [SwaggerOperation("Retrieves all the result from the database.")]
         public IActionResult GetAllAuthors()
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
-                var authors = _mediator.Send(new GetAllAuthorsQueryHandler()).Result;
+                var result = _mediator.Send(new GetAllAuthorsQuery()).Result;
 
-                return authors.Count == 0 ? NotFound("No authors in list") : Ok(authors);
+                if (!result.IsSuccess)
+                {
+                    return BadRequest(new { result.Data, result.IsSuccess, result.ErrorMessage });
+                }
+                
+                return Ok(new { result.Data, result.IsSuccess, result.ErrorMessage });
             }
-            catch
+            catch (Exception e)
             {
-                return StatusCode(500, "Internal server error");
+                return BadRequest(e.InnerException);
             }
         }
 
@@ -65,70 +73,57 @@ namespace BookApi.Controllers
         [SwaggerOperation("Adds an author to the database.")]
         public IActionResult AddAuthor([FromBody] Author author)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                bool authorAdded = _mediator.Send(new CreateAuthorCommand(author)).Result;
-                if (authorAdded)
-                {
-                    return Ok("Author added");
-                }
-                else
-                {
-                    return BadRequest("Could not add Author.");
-                }
+                return BadRequest(ModelState);
             }
-            catch
-            {
-                return StatusCode(500, "Internal server error");
-            }
-        }
 
+            var result = _mediator.Send(new CreateAuthorCommand(author)).Result;
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest(new { result.Data, result.IsSuccess, result.ErrorMessage });
+            }
+
+            return Ok(new { result.Data, result.IsSuccess, result.ErrorMessage });
+        }
         [Authorize]
         [HttpPut("UpdateAuthor")]
         [SwaggerOperation("Updates an author in the database.")]
         public IActionResult UpdateAuthor([FromQuery] string id, [FromBody] Author author)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                bool authorUpdated = _mediator.Send(new UpdateAuthorCommand(author)).Result;
+                return BadRequest(ModelState);
+            }
 
-                if (authorUpdated)
-                {
-                    return Ok("Author updated");
-                }
-                else
-                {
-                    return BadRequest("Could not update Author.");
-                }
-            }
-            catch
+            var result = _mediator.Send(new UpdateAuthorCommand(author)).Result;
+
+            if (!result.IsSuccess)
             {
-                return StatusCode(500, "Internal server error");
+                return BadRequest(new { result.Data, result.ErrorMessage, result.IsSuccess });
             }
+
+            return Ok(new { result.Data, result.IsSuccess, result.ErrorMessage });
         }
-
         [Authorize]
         [HttpDelete("DeleteAuthor")]
         [SwaggerOperation("Deletes an author from the database with UserId")]
         public IActionResult DeleteAuthor([FromQuery] string id)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                bool authorDeleted = _mediator.Send(new DeleteAuthorCommand(Guid.Parse(id))).Result;
-                
-                if (authorDeleted)
-                {
-                    return Ok("Author deleted");
-                }
-                else
-                {
-                    return BadRequest("Could not delete Author.");
-                }
+                return BadRequest(ModelState);
             }
-            catch
+
+            var result = _mediator.Send(new DeleteAuthorCommand(Guid.Parse(id))).Result;
+
+            if (!result.IsSuccess)
             {
-                return StatusCode(500, "Internal server error");
+                return BadRequest(new {result.Data, result.ErrorMessage, result.IsSuccess});
             }
+
+            return Ok(new { result.Data, result.IsSuccess, result.ErrorMessage });
         }
     }
 }

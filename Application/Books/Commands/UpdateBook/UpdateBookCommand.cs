@@ -4,7 +4,7 @@ using System.Security.AccessControl;
 
 namespace Application.Books.Commands.UpdateBook
 {
-    public class UpdateBookCommand : IRequest<bool>
+    public class UpdateBookCommand : IRequest<OperationResult<bool>>
     {
         public UpdateBookCommand(Book bookToUpdate)
         {

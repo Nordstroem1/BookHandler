@@ -1,8 +1,8 @@
-﻿
-using Application.Books.Commands.CreateBook;
-using Application.MappingProfiles;
-using Application.Users.Queries;
-using AutoMapper;
+﻿using Application.MappingProfiles;
+using Domain.Interfaces;
+using Infrastructure.Data.Caching;
+using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application.DependencyInjection
@@ -15,6 +15,18 @@ namespace Application.DependencyInjection
 
             services.AddMediatR(config => config.RegisterServicesFromAssemblies(assembly));
             services.AddScoped<TokenHelper>();
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddMemoryCache();
+            services.AddScoped<ICacheMemoryService, MemoryCacheService>();
+            services.AddControllers(options =>
+            {
+                options.CacheProfiles.Add("DefaultCache",
+                    new CacheProfile()
+                    {
+                        Duration = 60,
+                        Location = ResponseCacheLocation.Any,
+                    });
+            });
             services.AddAutoMapper(config =>
             {
                 config.AddProfile<BookmappingProfile>();
