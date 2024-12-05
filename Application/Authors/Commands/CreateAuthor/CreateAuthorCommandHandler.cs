@@ -4,31 +4,24 @@ using MediatR;
 
 namespace Application.Authors.Commands.CreateAuthor
 {
-    public class CreateAuthorCommandHandler : IRequestHandler<CreateAuthorCommand, bool>
+    public class CreateAuthorCommandHandler : IRequestHandler<CreateAuthorCommand, OperationResult<bool>>
     {
         private readonly IGenericRepository<Author> _genericRepository;
         public CreateAuthorCommandHandler(IGenericRepository<Author> genericRepository)
         {
             _genericRepository = genericRepository;
         }
-        public async Task<bool> Handle(CreateAuthorCommand request, CancellationToken cancellationToken)
+        public async Task<OperationResult<bool>> Handle(CreateAuthorCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var authorAdded = await _genericRepository.AddAsync(request.Author);
+            var authorAdded = await _genericRepository.AddAsync(request.Author);
 
-                if (authorAdded != null)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch
+            if (authorAdded != null)
             {
-                throw new Exception("Something went wrong while adding the author.");
+                return OperationResult<bool>.Success(true);
+            }
+            else
+            {
+                return OperationResult<bool>.Fail("Something went wrong while adding the author.");
             }
         }
     }

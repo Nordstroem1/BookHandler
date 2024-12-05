@@ -5,31 +5,35 @@ using MediatR;
 
 namespace Application.Books.Commands.DeleteBook
 {
-    public class DeleteBookCommandHandler : IRequestHandler<DeleteBookCommand, bool>
+    public class DeleteBookCommandHandler : IRequestHandler<DeleteBookCommand, OperationResult<bool>>
     {
         private IGenericRepository<Book> _genericRepository;
         public DeleteBookCommandHandler(IGenericRepository<Book> genericRepository)
         {
             _genericRepository = genericRepository;
         }
-        public async Task<bool> Handle(DeleteBookCommand request, CancellationToken cancellationToken)
+        public async Task<OperationResult<bool>> Handle(DeleteBookCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                var existingBook = await _genericRepository.GetByIdAsync(Guid.Parse(request.BookId));
+                var result = await _genericRepository.GetByIdAsync(Guid.Parse(request.BookId));
 
-                if (existingBook == null)
+                if(result == null)
                 {
-                    return false;
+                    return OperationResult<bool>.Fail("Book not found.");
                 }
                 
-                var bookDeleted = await _genericRepository.DeleteAsync(existingBook);
+                var bookDeleted = await _genericRepository.DeleteAsync(result);
+                if (bookDeleted != null)
+                {
+                    return OperationResult<bool>.Fail("Failure while deleting the book.");
+                }
 
-                return true;
+                return OperationResult<bool>.Success(true);
             }
-            catch
+            catch(Exception ex)
             {
-                throw new Exception("Something went wrong when deleting the book.");
+                return OperationResult<bool>.Fail(ex.Message);
             }
         }
     }

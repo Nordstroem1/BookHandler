@@ -1,9 +1,11 @@
 ﻿using Application.Dtos;
+using Domain.Models;
 using MediatR;
+using System.Runtime.CompilerServices;
 
 namespace Application.Users.Queries.LoginUserQuery
 {
-    public class LoginUserQuery : IRequest<string>
+    public class LoginUserQuery : IRequest<OperationResult<string>>
     {
         public LoginUserQuery(UserDto user)
         {

@@ -1,22 +1,36 @@
-﻿using Domain.Models;
+﻿using Domain.Interfaces;
+using Domain.Models;
 using Infrastructure.Databases;
 using MediatR;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Application.Users.Queries.GetAllUsersQuery
 {
-    public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, List<User>>
+    public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, OperationResult<List<User>>>
     {
-        private readonly FakeDatabase _fakeDatabase;
-        public GetAllUsersQueryHandler(FakeDatabase fakeDatabase)
+        private readonly IGenericRepository<User> _genericRepository;
+        private readonly IMemoryCache _memoryCache;
+        public GetAllUsersQueryHandler(IGenericRepository<User> genericRepository, IMemoryCache memoryCache)
         {
-            _fakeDatabase = fakeDatabase;
+            _memoryCache = memoryCache;
+            _genericRepository = genericRepository;
         }
-
-        public Task<List<User>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
+        public async Task<OperationResult<List<User>>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
         {
-            var listOfUsers = _fakeDatabase.GetAllUsers();
+            if(!_memoryCache.TryGetValue("GetAllUsers", out IEnumerable<User> cachedUsers))
+            {
+                if (cachedUsers == null || !cachedUsers.Any())
+                {
+                    return OperationResult<List<User>>.Fail("No users found");
+                }
 
-            return Task.FromResult(listOfUsers);
+                var allUsers = await _genericRepository.GetAllAsync();
+                _memoryCache.Set("GetAllUsers", allUsers);
+
+                return OperationResult<List<User>>.Success(cachedUsers.ToList());
+            }
+            return OperationResult<List<User>>.Success(cachedUsers.ToList());
         }
     }
 }

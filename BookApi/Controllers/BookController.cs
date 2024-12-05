@@ -20,37 +20,51 @@ namespace BookApi.Controllers
         {
             _mediator = mediator;
         }
+
         [Authorize]
         [HttpGet("GetAllBooks")]
         [SwaggerOperation("Retrieves all the books from the database.")]
         public IActionResult GetAllBooks()
         {
-            try
+            if (!ModelState.IsValid)
             {
-                var bookList = _mediator.Send(new GetAllBooksQueryHandler()).Result;
-                return bookList.Count == 0 ? NotFound("No books in list") : Ok(bookList);
+                return BadRequest(ModelState);
             }
-            catch
+
+            var result = _mediator.Send(new GetAllBooksQuery()).Result;
+
+            if(!result.IsSuccess)
             {
-                return StatusCode(500, "Internal server error");
+                return BadRequest(new {result.ErrorMessage, result.Data, result.IsSuccess});
             }
+
+            return Ok(new { result.ErrorMessage, result.Data, result.IsSuccess });
         }
+
         [Authorize]
         [HttpGet("GetBookById")]
         [SwaggerOperation("Retrieves a book from the database by id.")]
         public IActionResult GetBook([FromQuery] string id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
-                var bookDto = _mediator.Send(new GetBookByIdQuery(Guid.Parse(id))).Result;
+                var result = _mediator.Send(new GetBookByIdQuery(Guid.Parse(id))).Result;
 
-                if (bookDto == null) { return NotFound("Book not found"); }
+                if (!result.IsSuccess)
+                {
+                    return BadRequest(new { result.ErrorMessage, result.Data, result.IsSuccess });
+                }
 
-                return Ok(bookDto);
+                return Ok(new { result.ErrorMessage, result.Data, result.IsSuccess });
             }
-            catch
+            catch(Exception ex)
             {
-                return StatusCode(500, "Internal server error");
+                return BadRequest(ex.Message);
             }
         }
 
@@ -59,22 +73,25 @@ namespace BookApi.Controllers
         [SwaggerOperation("Adds a book to the database.")]
         public IActionResult AddBook([FromBody] Book book)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
-                bool bookAdded = _mediator.Send(new CreateBookCommand(book)).Result;
+                var result = _mediator.Send(new CreateBookCommand(book)).Result;
 
-                if (bookAdded)
+                if (!result.IsSuccess)
                 {
-                    return Ok("Book added");
+                    return BadRequest(new {result.ErrorMessage, result.Data, result.IsSuccess});
                 }
-                else
-                {
-                    return BadRequest("Something went wrong while adding the book.");
-                }
+
+                return Ok(new { result.ErrorMessage, result.Data, result.IsSuccess });
             }
-            catch
+            catch(Exception ex)
             {
-                return StatusCode(500, "Internal server error");
+                return BadRequest(ex.Message);
             }
         }
 
@@ -83,22 +100,25 @@ namespace BookApi.Controllers
         [SwaggerOperation("Updates a book in the database.")]
         public IActionResult UpdateBook([FromQuery] string idOfChosenBook, [FromBody] Book book)
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
-                bool bookUpdated = _mediator.Send(new UpdateBookCommand(book)).Result;
+                var bookUpdated = _mediator.Send(new UpdateBookCommand(book)).Result;
 
-                if (bookUpdated)
+                if (!bookUpdated.IsSuccess)
                 {
-                    return Ok("Book updated");
+                    return BadRequest(OperationResult<Book>.Fail("Could not update the book"));
                 }
-                else
-                {
-                    return BadRequest("Something went wrong while updating the book.");
-                }
+
+                return Ok(OperationResult<Book>.Success(book));
             }
-            catch
+            catch(Exception ex)
             {
-                return StatusCode(500, "Internal server error");
+                return BadRequest(OperationResult<Book>.Fail(ex.Message));
             }
         }
 
@@ -107,17 +127,20 @@ namespace BookApi.Controllers
         [SwaggerOperation("Deletes a book from the database.")]
         public IActionResult DeleteBook([FromQuery] string id)
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             try
             {
-                bool bookDeleted = _mediator.Send(new DeleteBookCommand(id)).Result;
-                if (bookDeleted)
+                var result = _mediator.Send(new DeleteBookCommand(id)).Result;
+
+                if (!result.IsSuccess)
                 {
-                    return Ok("Book deleted");
+                    return BadRequest(OperationResult<bool>.Fail("Could not delete book"));
                 }
-                else
-                {
-                    return BadRequest("Something went wrong while deleting the book.");
-                }
+
+                return Ok(OperationResult<bool>.Success(true));
             }
             catch
             {

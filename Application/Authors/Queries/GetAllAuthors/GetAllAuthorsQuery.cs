@@ -2,9 +2,9 @@
 using MediatR;
 namespace Application.Authors.Queries.GetAllAuthors
 {
-    public class GetAllAuthorsQueryHandler : IRequest<List<Author>>
+    public class GetAllAuthorsQuery : IRequest<OperationResult<List<Author>>>
     {
-        public GetAllAuthorsQueryHandler() 
+        public GetAllAuthorsQuery() 
         {
             Authors = new List<Author>();
         }

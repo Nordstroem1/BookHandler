@@ -17,14 +17,14 @@ namespace BookHandlerTest.AuthorTests.QueriesTests
             var fixture = new GetAuthorByIdFixture();
             var author = new Author(Guid.NewGuid(), "author1", new DateOnly(1942, 09, 25), "place1");
             var authorDto = new AuthorDto(author.Id, author.Name);
-            A.CallTo(() => fixture._genericRepository.GetByIdAsync(author.Id)).Returns(author);
+            A.CallTo(() => fixture._genericRepository.GetByIdAsync(author.Id)).Returns(authorDto);
             var query = new GetAuthorByIdQuery(author.Id);
             
             // Act
             var result = await fixture.getAuthorByIdQueryHandler.Handle(query, CancellationToken.None);
 
             //assert
-            result.Should().BeEquivalentTo(authorDto).And.BeOfType<AuthorDto>();
+            result.Data.Should().BeEquivalentTo(authorDto);
         }
     }
 }

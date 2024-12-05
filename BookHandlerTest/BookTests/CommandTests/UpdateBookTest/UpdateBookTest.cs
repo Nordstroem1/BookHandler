@@ -23,7 +23,7 @@ namespace BookHandlerTest.BookTests.CommandTests.UpdateBookTest
             var result = await fixture.UpdateBookCommandHandler.Handle(new UpdateBookCommand(updatedBook), CancellationToken.None);
 
             //assert
-            result.Should().BeTrue();
+            result.Equals(true);
         }
     }
 }

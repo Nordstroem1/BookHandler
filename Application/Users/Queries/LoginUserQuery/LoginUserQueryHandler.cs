@@ -1,29 +1,32 @@
-﻿using Infrastructure.Databases;
+﻿using Domain.Interfaces;
+using Domain.Models;
+using Infrastructure.Databases;
 using MediatR;
 namespace Application.Users.Queries.LoginUserQuery
 {
-    public class LoginUserQueryHandler : IRequestHandler<LoginUserQuery, string>
+    public class LoginUserQueryHandler : IRequestHandler<LoginUserQuery, OperationResult<string>>
     {
-        private FakeDatabase _fakeDatabase { get; set; }
+        private readonly IGenericRepository<User> _genericRepository;
         private TokenHelper _tokenHelper { get; set; }
-        public LoginUserQueryHandler(FakeDatabase fakeDatabase, TokenHelper tokenHelper)
+        public LoginUserQueryHandler(IGenericRepository<User> genericRepository, TokenHelper tokenHelper)
         {
             _tokenHelper = tokenHelper;
-            _fakeDatabase = fakeDatabase;
+            _genericRepository = genericRepository;
         }
-        public Task<string> Handle(LoginUserQuery request, CancellationToken cancellationToken)
+        public async Task<OperationResult<string>> Handle(LoginUserQuery request, CancellationToken cancellationToken)
         {
-            var foundUser = _fakeDatabase.LoginUser(request.UserDto.UserName, request.UserDto.Password);
+            var foundUsers = await _genericRepository.Find(u => u.UserName == request.UserDto.UserName);
+            var foundUser = foundUsers.FirstOrDefault();
 
-            if (foundUser != null)
+            if (foundUser != null && BCrypt.Net.BCrypt.Verify(request.UserDto.Password, foundUser.Password))
             {
                 string token = _tokenHelper.GenerateToken(foundUser);
 
-                return Task.FromResult(token);
+                return OperationResult<string>.Success(token);
             }
             else
             {
-                return Task.FromResult("Login failed");
+                return OperationResult<string>.Fail("Invalid username or password.");
             }
         }
     }

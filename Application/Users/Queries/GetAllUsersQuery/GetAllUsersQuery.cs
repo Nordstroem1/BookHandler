@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Application.Users.Queries.GetAllUsersQuery
 {
-    public class GetAllUsersQuery : IRequest<List<User>>
+    public class GetAllUsersQuery : IRequest<OperationResult<List<User>>>
     {
         public GetAllUsersQuery()
         {

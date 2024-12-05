@@ -5,32 +5,25 @@ using MediatR;
 
 namespace Application.Authors.Commands.DeleteAuthor
 {
-    public class DeleteAuthorCommandHandler : IRequestHandler<DeleteAuthorCommand, bool>
+    public class DeleteAuthorCommandHandler : IRequestHandler<DeleteAuthorCommand, OperationResult<bool>>
     {
         private readonly IGenericRepository<Author> _genericRepository;
         public DeleteAuthorCommandHandler(IGenericRepository<Author> genericRepository)
         {
             _genericRepository = genericRepository;
         }
-        public async Task<bool> Handle(DeleteAuthorCommand request, CancellationToken cancellationToken)
+        public async Task<OperationResult<bool>> Handle(DeleteAuthorCommand request, CancellationToken cancellationToken)
         {
-            try
+            var foundAuthor = await _genericRepository.GetByIdAsync(request.AuthorId);
+
+            if (foundAuthor == null)
             {
-                var foundAuthor = await _genericRepository.GetByIdAsync(request.AuthorId);
-
-                if (foundAuthor == null)
-                {
-                    return false;
-                }
-
-                var deletedAuthor = await _genericRepository.DeleteAsync(foundAuthor);
-
-                return true;
+                return OperationResult<bool>.Fail("Author not found");
             }
-            catch
-            {
-                throw new Exception("Author not found");
-            }
+
+            var deletedAuthor = await _genericRepository.DeleteAsync(foundAuthor);
+
+            return OperationResult<bool>.Success(true);
         }
     }
 }

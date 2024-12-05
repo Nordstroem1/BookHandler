@@ -9,12 +9,12 @@ namespace BookHandlerTest.BookTests.BookFixtures.QueryFixtures
     public class GetAllBooksFixture
     {
         public IGenericRepository<Book> genericRepository { get; }
-        public GetAllBooksQuery GetBookByIdCommand { get; }
+        public GetAllBooksQueryHandler GetBookByIdCommand { get; }
         public GetAllBooksFixture()
         {
             var fixture = new AutoFixture.Fixture();
             genericRepository = A.Fake<IGenericRepository<Book>>();
-            GetBookByIdCommand = new GetAllBooksQuery(genericRepository);
+            GetBookByIdCommand = new GetAllBooksQueryHandler(genericRepository);
         }
     }
 }

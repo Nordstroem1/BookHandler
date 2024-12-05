@@ -25,7 +25,7 @@ namespace BookHandlerTest.AuthorTests.CommandTests.DeleteAuthorTest
             var result = await deleteAuthorFixture.deleteAuthorCommandHandler.Handle(deleteAuthorCommand, CancellationToken.None);
 
             // Assert
-            result.Should().BeTrue();
+            Assert.Equal(true, result.IsSuccess);
         }
     }
 }

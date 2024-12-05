@@ -6,7 +6,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using System.IdentityModel.Tokens.Jwt;
 
-namespace Application.Users.Queries
+namespace Application
 {
     public class TokenHelper
     {
@@ -28,7 +28,7 @@ namespace Application.Users.Queries
                     new Claim(ClaimTypes.Role,"Admin")
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
