@@ -10,8 +10,9 @@ namespace Application.Authors.Queries.GetAllAuthors
         private readonly IGenericRepository<Author> _genericRepository;
         private readonly IMemoryCache _memoryCache;
         private const string cacheKey = "GetAllAuthors";
-        public GetAllAuthorQueryHandler(IGenericRepository<Author> genericRepository, IMemoryCache _memoryCache)
+        public GetAllAuthorQueryHandler(IGenericRepository<Author> genericRepository, IMemoryCache memoryCache)
         {
+            _memoryCache = memoryCache;
             _genericRepository = genericRepository;
         }
         public async Task<OperationResult<List<Author>>> Handle(GetAllAuthorsQuery request, CancellationToken cancellationToken)
@@ -20,12 +21,9 @@ namespace Application.Authors.Queries.GetAllAuthors
             {
                 if(!_memoryCache.TryGetValue(cacheKey, out IEnumerable<Author>cachedAuthors))
                 {
-                    if (cachedAuthors == null || !cachedAuthors.Any())
-                    {
-                        return OperationResult<List<Author>>.Fail("No Authors found.");
-                    }
 
                     var allAuthorsFromDb = await _genericRepository.GetAllAsync();
+                    cachedAuthors = allAuthorsFromDb;
                     _memoryCache.Set(cacheKey, cachedAuthors);
 
                     return OperationResult<List<Author>>.Success(cachedAuthors.ToList());
@@ -33,9 +31,9 @@ namespace Application.Authors.Queries.GetAllAuthors
 
                 return OperationResult<List<Author>>.Success(cachedAuthors.ToList());
             }
-            catch
+            catch(Exception ex)
             {
-                throw new ApplicationException("Something went wrong while getting the allAuthorsFromDb.");
+                throw new ApplicationException($"Error in GetAllAuthorQueryHandler: {ex.Message}");
             }
         }
     }

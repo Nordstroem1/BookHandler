@@ -25,6 +25,7 @@ namespace BookHandlerTest.AuthorFixtures.CommandFixtures
             _genericRepository = A.Fake<IGenericRepository<Author>>();
             mapper = A.Fake<IMapper>();
             _memoryCache = A.Fake<IMemoryCache>();
+            _logger = A.Fake<ILogger<CreateAuthorCommandHandler>>();
             createAuthorCommandHandler = new CreateAuthorCommandHandler(_genericRepository, _logger);
         }
     }
