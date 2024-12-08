@@ -8,6 +8,7 @@ using Application.Authors.Queries.GetAllAuthors;
 using Application.Authors.Queries.GetAuthorById;
 using Swashbuckle.AspNetCore.Annotations;
 using Microsoft.AspNetCore.Authorization;
+
 namespace BookApi.Controllers
 {
     [ApiController]
@@ -15,10 +16,12 @@ namespace BookApi.Controllers
     public class AuthorController : Controller
     {
         private readonly IMediator _mediator;
+        private readonly ILogger<AuthorController> _logger;
 
-        public AuthorController(IMediator mediator)
+        public AuthorController(IMediator mediator, ILogger<AuthorController> logger)
         {
             _mediator = mediator;
+            _logger = logger;
         }
 
         [Authorize]
@@ -35,9 +38,11 @@ namespace BookApi.Controllers
 
             if (!result.IsSuccess)
             {
+                _logger.LogError("Could not get author by id.");
                 return BadRequest(new { result.Data, result.IsSuccess, result.ErrorMessage });
             }
 
+            _logger.LogInformation("Author retrieved successfully.");
             return Ok(new { result.Data, result.IsSuccess, result.ErrorMessage });
         }
 
@@ -48,6 +53,7 @@ namespace BookApi.Controllers
         {
             if (!ModelState.IsValid)
             {
+                _logger.LogError("Model state is not valid.");
                 return BadRequest(ModelState);
             }
 
@@ -57,9 +63,10 @@ namespace BookApi.Controllers
 
                 if (!result.IsSuccess)
                 {
+                    _logger.LogError("Could not get all authors.");
                     return BadRequest(new { result.Data, result.IsSuccess, result.ErrorMessage });
                 }
-                
+                _logger.LogInformation("Authors retrieved successfully.");
                 return Ok(new { result.Data, result.IsSuccess, result.ErrorMessage });
             }
             catch (Exception e)
@@ -82,9 +89,11 @@ namespace BookApi.Controllers
 
             if (!result.IsSuccess)
             {
+                _logger.LogWarning("Could not add author.");
                 return BadRequest(new { result.Data, result.IsSuccess, result.ErrorMessage });
             }
 
+            _logger.LogWarning("Author added successfully.");
             return Ok(new { result.Data, result.IsSuccess, result.ErrorMessage });
         }
         [Authorize]
@@ -101,9 +110,11 @@ namespace BookApi.Controllers
 
             if (!result.IsSuccess)
             {
+                _logger.LogError("Could not update author.");
                 return BadRequest(new { result.Data, result.ErrorMessage, result.IsSuccess });
             }
 
+            _logger.LogInformation("Author updated successfully.");
             return Ok(new { result.Data, result.IsSuccess, result.ErrorMessage });
         }
         [Authorize]
@@ -120,6 +131,7 @@ namespace BookApi.Controllers
 
             if (!result.IsSuccess)
             {
+                _logger.LogError("Could not delete author.");
                 return BadRequest(new {result.Data, result.ErrorMessage, result.IsSuccess});
             }
 

@@ -2,7 +2,6 @@
 using Domain.Interfaces;
 using Domain.Models;
 using FakeItEasy;
-using Infrastructure.Databases;
 namespace BookHandlerTest.BookTests.BookFixtures.CommandFixtures
 {
     public class CreateBookFixture

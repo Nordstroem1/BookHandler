@@ -4,7 +4,7 @@ namespace Domain.Models
 {
     public class Author
     {
-        [Required]
+        [Required(ErrorMessage ="Missing id")]
         public Guid Id { get; private set; }
         [MinLength(3)]
         [MaxLength(30)]
