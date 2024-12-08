@@ -20,16 +20,18 @@ namespace Application.Users.Queries.GetAllUsersQuery
         {
             if(!_memoryCache.TryGetValue("GetAllUsers", out IEnumerable<User> cachedUsers))
             {
-                if (cachedUsers == null || !cachedUsers.Any())
+                var allUsers = await _genericRepository.GetAllAsync();
+
+                if (allUsers == null || !allUsers.Any())
                 {
                     return OperationResult<List<User>>.Fail("No users found");
                 }
 
-                var allUsers = await _genericRepository.GetAllAsync();
                 _memoryCache.Set("GetAllUsers", allUsers);
 
                 return OperationResult<List<User>>.Success(cachedUsers.ToList());
             }
+
             return OperationResult<List<User>>.Success(cachedUsers.ToList());
         }
     }
