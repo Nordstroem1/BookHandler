@@ -1,5 +1,4 @@
-﻿using Application.Authors.Queries.GetAllAuthors;
-using Application.Authors.Queries.GetAuthorById;
+﻿using Application.Authors.Queries.GetAuthorById;
 using Application.Dtos;
 using Application.MappingProfiles;
 using AutoMapper;

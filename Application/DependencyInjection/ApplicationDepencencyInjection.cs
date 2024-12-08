@@ -27,6 +27,7 @@ namespace Application.DependencyInjection
                         Location = ResponseCacheLocation.Any,
                     });
             });
+            services.AddMemoryCache();
             services.AddAutoMapper(config =>
             {
                 config.AddProfile<BookmappingProfile>();

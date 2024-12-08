@@ -17,6 +17,7 @@ namespace BookHandlerTest.AuthorTests.AuthorFixtures.QueryFixtures
         public GetAllAuthorsFixture()
         {
             var fixture = new AutoFixture.Fixture();
+            _memoryCache = A.Fake<IMemoryCache>();
             _genericRepository = A.Fake<IGenericRepository<Author>>();
             getAllAuthorsQueryHandler = new GetAllAuthorQueryHandler(_genericRepository,_memoryCache);
         }

@@ -1,11 +1,9 @@
-﻿using Xunit;
-using FakeItEasy;
+﻿using FakeItEasy;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Application.Authors.Queries.GetAuthorById;
-using System;
 using Application.Dtos;
 using AutoMapper;
 

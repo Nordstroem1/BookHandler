@@ -12,8 +12,9 @@ namespace Application.Books.Queries.GetAllBooks
         private const string cacheKey = "GetAllBooks";
 
 
-        public GetAllBooksQueryHandler(IGenericRepository<Book> genericRepository)
+        public GetAllBooksQueryHandler(IGenericRepository<Book> genericRepository, IMemoryCache memoryCache)
         {
+            _memoryCache = memoryCache;
             _genericRepository = genericRepository;
         }
 
@@ -23,12 +24,9 @@ namespace Application.Books.Queries.GetAllBooks
             {
                 if (!_memoryCache.TryGetValue(cacheKey, out IEnumerable<Book> cachedBooks))
                 {
-                    if (cachedBooks == null || !cachedBooks.Any())
-                    {
-                        return OperationResult<List<Book>>.Fail("No books found");
-                    }
 
                     var allBooks = await _genericRepository.GetAllAsync();
+                    cachedBooks = allBooks;
                     _memoryCache.Set(cacheKey, allBooks);
 
                     return OperationResult<List<Book>>.Success(cachedBooks.ToList());
